@@ -1,6 +1,7 @@
-[![Build Status](https://travis-ci.org/codejanovic/java-filesearch.svg?branch=develop)](https://travis-ci.org/codejanovic/java-filesearch)
-[![Coverage Status](https://coveralls.io/repos/github/codejanovic/java-filesearch/badge.svg?branch=develop)](https://coveralls.io/github/codejanovic/java-filesearch?branch=develop)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
+[![Coverage Status](https://coveralls.io/repos/github/codejanovic/java-filesearch/badge.svg?branch=develop)](https://coveralls.io/github/codejanovic/java-filesearch?branch=develop)
+[![](https://jitpack.io/v/ZrdJ/java-filesearch.svg)](https://jitpack.io/#ZrdJ/java-filesearch)
+![GitHub Workflow Status (branch)](https://github.com/zrdj/java-filesearch/actions/workflows/maven.yml/badge.svg)
 
 # java-filesearch
 
