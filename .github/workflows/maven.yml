@@ -8,7 +8,7 @@ on: [ push,  pull_request ]
 jobs:
   build:
     name: Build for JDK ${{ matrix.java }}
-    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'codejanovic/java-filesearch' }}
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'zrdj/java-filesearch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
