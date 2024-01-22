@@ -10,12 +10,12 @@
 
     <name>java-filesearch</name>
     <description>java filesearch reimagined</description>
-    <url>https://github.com/codejanovic/java-filesearch</url>
+    <url>https://github.com/zrdj/java-filesearch</url>
     <developers>
         <developer>
             <id>codejanovic</id>
             <name>Aleksandar Damjanovic</name>
-            <email>codejanovic@gmail.com</email>
+            <email>codejanovic@zrdj.org</email>
             <roles>
                 <role>Project-Administrator</role>
                 <role>Developer</role>
@@ -32,9 +32,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/codejanovic/java-filesearch.git</connection>
-        <developerConnection>scm:git:git@github.com:codejanovic/java-filesearch.git</developerConnection>
-        <url>https://github.com/codejanovic/java-filesearch.git</url>
+        <connection>scm:git:git://github.com/zrdj/java-filesearch.git</connection>
+        <developerConnection>scm:git:git@github.com:zrdj/java-filesearch.git</developerConnection>
+        <url>https://github.com/zrdj/java-filesearch.git</url>
         <tag>HEAD</tag>
     </scm>
 
