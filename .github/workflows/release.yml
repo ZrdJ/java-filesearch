@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  trigger-jitpack:
+    name: Trigger JitPack Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger JitPack build
+        run: |
+          echo "Triggering JitPack build for ${{ github.event.release.tag_name }}"
+          curl -s "https://jitpack.io/com/github/ZrdJ/${{ github.event.repository.name }}/${{ github.event.release.tag_name }}/build.log" || true
+
+  update-readme:
+    name: Update README Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Update version in README
+        run: |
+          sed -i 's/<version>.*<\/version>/<version>${{ github.event.release.tag_name }}<\/version>/g' README.md
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --staged --quiet || git commit -m "Update README to version ${{ github.event.release.tag_name }}"
+          git push
