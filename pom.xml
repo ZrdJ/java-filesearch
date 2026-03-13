@@ -116,10 +116,6 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <compilerArgs>
-                        <arg>-XDignore.symbol.file</arg>
-                    </compilerArgs>
-                    <fork>true</fork>
                 </configuration>
             </plugin>
         </plugins>

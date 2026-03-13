@@ -1,7 +1,6 @@
 package com.github.zrdj.java.filesearch.filesystem.attributes;
 
 import com.github.zrdj.java.filesearch.filesystem.Attributes;
-import sun.nio.fs.BasicFileAttributesHolder;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,6 +8,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public final class Cached implements Attributes {
     private final Attributes fallback;
+    private BasicFileAttributes cachedAttributes;
 
     public Cached(final Attributes attributes) {
         this.fallback = attributes;
@@ -26,13 +26,10 @@ public final class Cached implements Attributes {
 
     @Override
     public BasicFileAttributes load() throws IOException {
-        if ((path() instanceof BasicFileAttributesHolder) && (System.getSecurityManager() == null)) {
-            final BasicFileAttributes cached = ((BasicFileAttributesHolder) path()).get();
-            if (cached != null && (!followLinks() || !cached.isSymbolicLink())) {
-                return cached;
-            }
+        if (cachedAttributes == null) {
+            cachedAttributes = fallback.load();
         }
-        return fallback.load();
+        return cachedAttributes;
     }
 
     @Override
