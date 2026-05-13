@@ -1,0 +1,75 @@
+{
+  // Devcontainer-Sicherheitsmodell: Push aus Container ist hart geblockt (DEVCONTAINER=true + pre-push-Hook).
+  // Keine Credentials im Image, kein SSH-Agent-Forwarding, keine Cred-Mounts.
+  // Quelle: ~/.claude/vault/concepts/devcontainer-architektur.md
+  "name": "java-filesearch",
+
+  // 2026-05-13: JDK 25 LTS zum Zeitpunkt dieser Vorlage. Verfuegbarkeit pruefen mit:
+  //   docker manifest inspect mcr.microsoft.com/devcontainers/java:25-bookworm
+  // Fallback falls 25er-Tag noch nicht verfuegbar: java:21-bookworm.
+  // Microsoft-Java-Bookworm bringt JDK mit, **kein Maven** — wird im post-create per apt installiert.
+  "image": "mcr.microsoft.com/devcontainers/java:25-bookworm",
+
+  // Features:
+  // - docker-outside-of-docker: docker-CLI im Container + Sock-Permissions/Group fuer nonroot-User.
+  //   Voraussetzung fuer Testcontainers, jib, ko, Buildpacks (alles was Sibling-Container startet).
+  // Maven wird absichtlich NICHT ueber `features/java:1` installiert: das SDKMAN-Feature scheitert
+  // in manchen buildx-Sandbox-Netzen am Internet-Healthcheck. apt im post-create ist robust und
+  // liefert Maven 3.8.7 (Debian Bookworm). Wer ein anderes Maven braucht: Apache-Tarball im
+  // post-create unpacken oder eigenen Layer im Dockerfile.
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+
+  // Sicherheitsmarker: Hook .githooks/pre-push prueft diesen Wert und blockt bei "true".
+  // JDWP-Opts: agent listet auf 5005 fuer Remote-Debugging. suspend=n -> Build startet sofort.
+  // TESTCONTAINERS_HOST_OVERRIDE: Sibling-Container (Ryuk, Test-DB) sind ueber Host-Gateway
+  // erreichbar, nicht ueber default-bridge `172.17.0.1`. runArgs unten haengt `host.docker.internal`
+  // an /etc/hosts (Linux-Equivalent zum Mac/Win-Default). Wenn das Repo keinen Testcontainers-Pfad
+  // hat (kein jOOQ-Generate o.ae.), kann der Override entfernt werden — schadet aber nicht.
+  // JAVA_HOME: Eclipse Temurin (Adoptium) statt Microsoft OpenJDK. post-create.sh installiert
+  // Temurin parallel zum Microsoft-JDK aus dem Image. Begruendung: Distributions-Konsistenz mit
+  // CI (setup-java distribution=temurin) und Toolchains, die das Temurin-JDK-Layout erwarten
+  // (z.B. JAVA_HOME/Packages). Microsoft-OpenJDK liegt ungenutzt parallel — IDE-Indexing nimmt JAVA_HOME.
+  "containerEnv": {
+    "DEVCONTAINER": "true",
+    "MAVEN_OPTS": "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005",
+    "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
+    "JAVA_HOME": "/usr/lib/jvm/temurin-25-jdk-amd64"
+  },
+
+  // - --add-host: Linux-Equivalent zu Mac/Win `host.docker.internal`. Fuer Testcontainers.
+  // - --name:     fester Container-Name (`devcontainer-<basename>`) — verbessert `docker ps`-Lesbarkeit.
+  //               Konflikte handhabt devcontainer-CLI via --remove-existing-container.
+  //               Unterstuetzt `./dev down` (siehe dev-skripte.md).
+  "runArgs": [
+    "--add-host=host.docker.internal:host-gateway",
+    "--name", "devcontainer-${localWorkspaceFolderBasename}"
+  ],
+
+  // 5005 = JDWP (Remote JVM Debug, IntelliJ/VS Code). App-Port hier ergaenzen, z.B. 8080.
+  "forwardPorts": [5005],
+
+  // Mounts:
+  // - docker.sock: Daemon-Zugriff fuer Testcontainers + Build-Tools mit Container-Targets.
+  //   Trade-off + Anti-Pattern (NIE im Production-Image): vault/concepts/devcontainer-architektur.md "Docker-Zugriff im Container".
+  // - m2 Named Volume: persistenter Maven-Cache. Permissions im post-create gechownt
+  //   (Docker-Named-Volumes sind root:root by default; vscode-User braucht Schreibzugriff).
+  // - target/ NICHT als Root-Volume bei Multi-Module-Repos (jedes Sub-Modul hat eigenes target/).
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=devcontainer-${localWorkspaceFolderBasename}-m2,target=/home/vscode/.m2,type=volume"
+  ],
+
+  // Maven via apt + Volume-chown + Push-Block-Hook. Script erlaubt sauberes Fehler-Handling.
+  "postCreateCommand": ".devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-maven"
+      ]
+    }
+  }
+}
