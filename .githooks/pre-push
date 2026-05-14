@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Devcontainer Push-Block-Hook.
+# Verhindert git push aus dem Devcontainer.
+# Host (WSL/Mac) pusht unblockiert -- DEVCONTAINER-Env nur im Container gesetzt.
+# Quelle: ~/.claude/vault/concepts/devcontainer-architektur.md
+
+if [ "${DEVCONTAINER:-}" = "true" ]; then
+  echo "" >&2
+  echo "[pre-push] BLOCKED: git push is not allowed from inside a devcontainer." >&2
+  echo "[pre-push]" >&2
+  echo "[pre-push] Devcontainer hat keine Credentials und darf keine haben." >&2
+  echo "[pre-push] Push vom Host (WSL-Distro / Mac), dort liegen die Token." >&2
+  echo "[pre-push]" >&2
+  echo "[pre-push] Konzept: ~/.claude/vault/concepts/devcontainer-architektur.md" >&2
+  echo "" >&2
+  exit 1
+fi
+exit 0
