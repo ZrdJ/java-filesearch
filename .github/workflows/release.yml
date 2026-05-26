@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write   # README version bump push
+
 jobs:
   trigger-jitpack:
     name: Trigger JitPack Build
