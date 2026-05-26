@@ -1,0 +1,3 @@
+# Code owner: auto-request review from codejanovic on every PR.
+# Enforce via branch protection "Require review from Code Owners".
+* @codejanovic
