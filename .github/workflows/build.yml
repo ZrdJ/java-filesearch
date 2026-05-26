@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches-ignore: [main]   # main = release branch → release.yml; PRs inherit via head SHA
+    branches: ['**']   # all branches incl. main, NOT tags (tags → release flow)
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
