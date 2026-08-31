@@ -1,4 +1,8 @@
 .idea/**
-target/**.claude/settings.local.json
-.claude/skills/
+target/**
+.claude/settings.local.json
+.claude/skills/*
+!.claude/skills/docs
+!.claude/skills/spec
+!.claude/skills/wayfinder
 .claude/.cache/
