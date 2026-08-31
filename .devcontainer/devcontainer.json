@@ -1,7 +1,7 @@
 {
   // Devcontainer-Sicherheitsmodell: Push aus Container ist hart geblockt (DEVCONTAINER=true + pre-push-Hook).
   // Keine Credentials im Image, kein SSH-Agent-Forwarding, keine Cred-Mounts.
-  // Quelle: ~/.claude/vault/concepts/devcontainer-architektur.md
+  // Quelle: ~/.claude/docs/project/research/devcontainer-architektur.md
   "name": "java-filesearch",
 
   // 2026-05-13: JDK 25 LTS zum Zeitpunkt dieser Vorlage. Verfuegbarkeit pruefen mit:
