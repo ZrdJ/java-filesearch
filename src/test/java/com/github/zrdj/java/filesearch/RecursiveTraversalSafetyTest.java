@@ -111,6 +111,38 @@ public class RecursiveTraversalSafetyTest {
                 .isEqualTo(before);
     }
 
+    // [impl->req~recursive-traversal-safety.directory-stream-cleanup~1]
+    @Test
+    public void testRootDirectoryStreamIsClosedEvenWhenRootHasNoSubdirectoryToDescendInto() throws IOException {
+        // Same rationale as testDirectoryStreamsAreClosedAsTraversalAdvancesPastEachSibling
+        // for why /proc/self/fd and why Linux-only.
+        Assume.assumeTrue("requires /proc/self/fd (Linux)",
+                new File("/proc/self/fd").isDirectory());
+
+        final File emptyRoot = tempFolder.newFolder("emptyRoot");
+        final File filesOnlyRoot = tempFolder.newFolder("filesOnlyRoot");
+        new File(filesOnlyRoot, "a.txt").createNewFile();
+        new File(filesOnlyRoot, "b.txt").createNewFile();
+
+        // The root's own DirectoryStream is only ever closed via the ancestor
+        // stack, and the root never lands on that stack unless one of its own
+        // subdirectories gets opened. A root with no subdirectory - empty, or
+        // containing only files - never triggers that push, so its stream
+        // would otherwise never close. Repeating 3x per root turns a single
+        // possibly-lost descriptor into an unmistakable cumulative delta.
+        for (File root : new File[]{emptyRoot, filesOnlyRoot}) {
+            final int before = openFileDescriptorCount();
+            for (int i = 0; i < 3; i++)
+                search().directory(root).recursively().byPath().stream().forEach(p -> {
+                });
+            final int after = openFileDescriptorCount();
+
+            assertThat(after)
+                    .as("open file descriptors before vs. after searching root '%s' (no subdirectory), repeated 3x", root.getName())
+                    .isEqualTo(before);
+        }
+    }
+
     private static int openFileDescriptorCount() throws IOException {
         try (Stream<Path> fds = Files.list(new File("/proc/self/fd").toPath())) {
             return (int) fds.count();
