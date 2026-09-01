@@ -2,8 +2,8 @@
 name: spec
 version: 3
 description: Spec-driven Arbeiten nach OpenSpec-Format, ohne dessen CLI. Legt Changes an (proposal, Delta-Spec, design, tasks), arbeitet sie ab, prueft Code gegen Spec und archiviert inklusive Delta-Merge in die Ist-Spec. Triggers auf Spec, Anforderung, Akzeptanzkriterium, Change, Vorhaben, Feature planen, propose, verify, archivieren, Scope-Creep, "was soll gebaut werden".
-# GENERIERT aus ~/.claude/skills-ref/spec/ — nicht hier editieren, Aenderungen gehoeren in die Referenz.
-source: personal-user-ref
+# GENERIERT aus personal/skills-ref/spec/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/spec/.
+source: personal-provider-ref
 ref-hash: sha256:2077ef1d72d4c36ad3500b5e7f7a461914659572a77bd41ba73d7b0c53c85b31
 ---
 

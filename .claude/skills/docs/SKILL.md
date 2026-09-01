@@ -2,8 +2,8 @@
 name: docs
 version: 6
 description: Wegweiser fuer den docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket). Triggers auf docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, "wo gehoert das hin".
-# GENERIERT aus ~/.claude/skills-ref/docs/ — nicht hier editieren, Aenderungen gehoeren in die Referenz.
-source: personal-user-ref
+# GENERIERT aus personal/skills-ref/docs/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/docs/.
+source: personal-provider-ref
 ref-hash: sha256:8bbe2a6370f6bbc4d2bfd6435d9d20cdbb73456ba316346092c7e9690b8f5edc
 ---
 

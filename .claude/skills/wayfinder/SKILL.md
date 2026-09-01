@@ -5,8 +5,8 @@ license: MIT
 upstream: https://github.com/mattpocock/skills
 upstream-commit: 8b78b531ab965735c5dc74f6f7a219e1e37326df
 description: Ein Vorhaben, dessen Weg noch nicht feststeht, als Karte offener Fragen fuehren und Ticket fuer Ticket aufloesen, bis der Weg klar ist und ein Change abgeleitet werden kann. Legt Karten unter docs/wayfinding/ an, trennt scharfe Fragen vom Nebel, haelt Blockierungen fest und schliesst mit einem Sondierungsergebnis. Triggers auf Wegfindung, Karte, unklarer Weg, "wie gehen wir das an", Vorhaben sondieren, offene Fragen sammeln, Nebel, Out of Scope, "wissen noch nicht was wir bauen".
-# GENERIERT aus ~/.claude/skills-ref/wayfinder/ — nicht hier editieren, Aenderungen gehoeren in die Referenz.
-source: personal-user-ref
+# GENERIERT aus personal/skills-ref/wayfinder/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/wayfinder/.
+source: personal-provider-ref
 ref-hash: sha256:97ac9b071336d1fdaff5ec1757f109ffd774c1a004219dab42cd380678670811
 ---
 
