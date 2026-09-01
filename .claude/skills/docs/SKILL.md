@@ -4,7 +4,7 @@ version: 6
 description: Wegweiser fuer den docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket). Triggers auf docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, "wo gehoert das hin".
 # GENERIERT aus ~/.claude/skills-ref/docs/ — nicht hier editieren, Aenderungen gehoeren in die Referenz.
 source: personal-user-ref
-ref-hash: sha256:c533b079c0c0fe245e306d801271909e6528f9f423b44d788afb6fa766ce680e
+ref-hash: sha256:8bbe2a6370f6bbc4d2bfd6435d9d20cdbb73456ba316346092c7e9690b8f5edc
 ---
 
 # docs
@@ -162,7 +162,7 @@ Jede Note traegt mindestens:
 
 ```yaml
 ---
-type: index | decision | spec | change | worklog | map | ticket | person | meeting | research | source
+type: index | decision | spec | change | worklog | map | ticket | person | meeting | research | source | archive
 title: Kurztitel
 updated: 2026-08-12          # letzte inhaltliche Aenderung
 ---
@@ -181,6 +181,15 @@ Datensaetze fuehrt, `records: true` — beides gibt es nur dort.
 traegt `type: research`, `project/sources/` traegt `type: source` — an der User-Ebene laengst in
 Gebrauch, aber nirgends aufgeschrieben, bis eine frisch umgezogene Ebene am 2026-08-31 `type:
 research` waehlte, ohne dass es hier stand.
+
+**`type: archive` fehlte aus demselben Grund und war laengst in Gebrauch, bevor es hier stand**:
+eine Note in `archive/`, die **nicht** plan- oder change-foermig ist — eine abgeschlossene
+Konzept-Note, deren Gegenstand es nicht mehr gibt (ein weggefallener Dienst, eine verworfene
+Architekturidee) — traegt `type: archive` und sonst nur `title:`/`updated:`, kein `status:`. Eine
+plan- bzw. change-foermige Note im Archiv (`type: change`, `type: map`, ...) behaelt dagegen ihren
+urspruenglichen Typ samt `status:` — sie wird beim Archivieren **nicht** auf `archive` umgestellt.
+Ein `status: active`, das dabei stehen bleibt, ist ein Fehler und gehoert auf den zum Ordner
+passenden Endzustand (`done`, `superseded`, ...) korrigiert, nicht auf `archive` umgetauft.
 
 ## 6. Templates je Typ
 
