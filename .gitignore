@@ -5,4 +5,8 @@ target/**
 !.claude/skills/docs
 !.claude/skills/spec
 !.claude/skills/wayfinder
+!.claude/skills/java
+!.claude/skills/build
+!.claude/skills/project-setup
+!.claude/skills/personal-zrdj-release
 .claude/.cache/
