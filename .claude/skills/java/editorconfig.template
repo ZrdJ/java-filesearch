@@ -1,0 +1,102 @@
+# EditorConfig - https://editorconfig.org
+# Kopiere diese Datei als .editorconfig ins Projekt-Root
+root = true
+
+# Defaults für alle Dateien
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# Java
+[*.java]
+indent_size = 4
+continuation_indent_size = 8
+max_line_length = 120
+
+# IntelliJ-spezifisch: Import-Reihenfolge
+# $* = static imports, | = Leerzeile, * = alle anderen
+ij_java_imports_layout = $*, |, *, |, javax.**, |, java.**
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_names_count_to_use_import_on_demand = 999
+
+# IntelliJ-spezifisch: Klammern
+ij_java_brace_style = end_of_line
+ij_java_class_brace_style = end_of_line
+ij_java_method_brace_style = end_of_line
+
+# IntelliJ-spezifisch: Leerzeilen
+ij_java_blank_lines_after_package = 1
+ij_java_blank_lines_before_imports = 1
+ij_java_blank_lines_after_imports = 1
+ij_java_blank_lines_around_class = 1
+ij_java_blank_lines_around_method = 1
+ij_java_blank_lines_around_field = 0
+
+# IntelliJ-spezifisch: Wrapping
+ij_java_wrap_long_lines = true
+ij_java_method_parameters_wrap = on_every_item
+ij_java_method_call_arguments_wrap = on_every_item
+ij_java_record_components_wrap = on_every_item
+ij_java_align_multiline_parameters = false
+ij_java_align_multiline_records = false
+
+# IntelliJ-spezifisch: Spaces
+ij_java_space_before_method_parentheses = false
+ij_java_space_before_if_parentheses = true
+ij_java_space_before_for_parentheses = true
+ij_java_space_before_while_parentheses = true
+ij_java_space_before_switch_parentheses = true
+ij_java_space_before_catch_parentheses = true
+ij_java_space_around_assignment_operators = true
+ij_java_space_around_logical_operators = true
+ij_java_space_around_equality_operators = true
+ij_java_space_around_relational_operators = true
+ij_java_space_around_additive_operators = true
+ij_java_space_around_multiplicative_operators = true
+ij_java_space_after_comma = true
+ij_java_space_before_comma = false
+
+# XML / POM
+[*.xml]
+indent_size = 4
+
+[pom.xml]
+indent_size = 4
+
+# Properties
+[*.properties]
+indent_size = 2
+
+# YAML
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON
+[*.json]
+indent_size = 2
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+indent_size = 2
+
+# SQL
+[*.sql]
+indent_size = 4
+ij_sql_keyword_case = upper
+ij_sql_identifier_case = lower
+
+# Shell Scripts
+[*.sh]
+indent_size = 2
+
+# Generated Code - nicht formatieren
+[**/generated/**]
+ij_formatter_enabled = false
+
+[**/org/jooq/generated/**]
+ij_formatter_enabled = false
