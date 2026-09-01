@@ -72,15 +72,19 @@ performs no equivalent check.
 - **THEN** that directory is not opened again
 
 ### Requirement: Only the Path-flavored iterator releases each directory's open resource as traversal moves past it
-`req~recursive-traversal-safety.directory-stream-cleanup~1`
+`req~recursive-traversal-safety.directory-stream-cleanup~2`
 
 `RecursiveSilentDirectoryIterator` reads each directory through a
 `DirectoryStream`, an OS-level resource. As traversal advances past a
 directory — whether by exhausting it or by finding it empty — that
 directory's `DirectoryStream` is closed, and any `IOException` raised by
-`close()` is swallowed rather than propagated. `RecursiveDirectoryIterator`
-reads directories via `File.listFiles()`, which holds no such resource
-open, so it has nothing to close.
+`close()` is swallowed rather than propagated. This holds for the search
+root the same as for any directory found beneath it, including a root
+that has no subdirectory to descend into (empty, or containing only
+files) — the root's own `DirectoryStream` is still closed once traversal
+is exhausted. `RecursiveDirectoryIterator` reads directories via
+`File.listFiles()`, which holds no such resource open, so it has nothing
+to close.
 
 #### Scenario: A directory's stream is closed once traversal moves past it
 
@@ -89,3 +93,10 @@ open, so it has nothing to close.
 - **THEN** that directory's `DirectoryStream` is closed
 - **AND** an `IOException` from that close does not propagate to the
   caller
+
+#### Scenario: The root's stream is closed even when it has no subdirectory to descend into
+
+- **WHEN** the root passed to a `byPath().recursively()` traversal is
+  empty, or contains only files and no subdirectories
+- **THEN** the root's own `DirectoryStream` is closed once traversal is
+  exhausted, the same as any other directory's

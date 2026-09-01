@@ -84,7 +84,7 @@ public class RecursiveTraversalSafetyTest {
         assertThat(entries).hasSize(3);
     }
 
-    // [impl->req~recursive-traversal-safety.directory-stream-cleanup~1]
+    // [impl->req~recursive-traversal-safety.directory-stream-cleanup~2]
     @Test
     public void testDirectoryStreamsAreClosedAsTraversalAdvancesPastEachSibling() throws IOException {
         // Only observable from outside the facade via the process's open file
@@ -111,7 +111,7 @@ public class RecursiveTraversalSafetyTest {
                 .isEqualTo(before);
     }
 
-    // [impl->req~recursive-traversal-safety.directory-stream-cleanup~1]
+    // [impl->req~recursive-traversal-safety.directory-stream-cleanup~2]
     @Test
     public void testRootDirectoryStreamIsClosedEvenWhenRootHasNoSubdirectoryToDescendInto() throws IOException {
         // Same rationale as testDirectoryStreamsAreClosedAsTraversalAdvancesPastEachSibling
