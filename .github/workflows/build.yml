@@ -28,3 +28,16 @@ jobs:
           cache: maven
       - name: Build & test
         run: mvn -B -ntp verify
+
+  traceability:
+    name: Check requirement <-> test chain
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Neither Maven nor a JDK: the check only reads docs/specs/ and the
+      # *Test.java files as text. It rides in its own job rather than inside
+      # the `build` matrix because it has nothing to do with which JDK
+      # compiled the code -- in the matrix it would run three times over and
+      # report a broken chain three times for the same reason.
+      - name: Check requirement <-> test chain
+        run: python3 bin/traceability/traceability.py --spec-root docs --source-root .
