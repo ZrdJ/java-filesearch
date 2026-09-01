@@ -32,8 +32,7 @@ public class RecursiveSilentDirectoryIterator implements Iterator<Path> {
                 openDirectory();
 
         if (givenNoNextEntry())
-            if (whenThereAreQueuedPaths())
-                thenDequeueThosePathsUntilThereIsANextEntryOrNoPathsLeft();
+            thenDequeueThosePathsUntilThereIsANextEntryOrNoPathsLeft();
 
         return iterator.hasNext();
     }
