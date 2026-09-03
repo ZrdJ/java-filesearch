@@ -1,10 +1,10 @@
 ---
 name: docs
-version: 6
-description: Wegweiser fuer den docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket). Triggers auf docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, "wo gehoert das hin".
+version: 7
+description: Wegweiser fuer den docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket, Artefakt). Triggers auf docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, veroeffentlichte Seite ablegen, "wo gehoert das hin".
 # GENERIERT aus personal/skills-ref/docs/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/docs/.
 source: personal-provider-ref
-ref-hash: sha256:8bbe2a6370f6bbc4d2bfd6435d9d20cdbb73456ba316346092c7e9690b8f5edc
+ref-hash: sha256:b773885aad2c43ba22181c2a55725ad142653a4b2a26683da13071c43e4070c2
 ---
 
 # docs
@@ -50,6 +50,9 @@ docs/
 │   ├── persons/{id}.md
 │   └── meetings/{YYYY-MM-DD}-{slug}.md
 │
+├── artifacts/          FUNDUS — was veroeffentlicht wurde (Abschnitt 4b)
+│   └── {YYYY-MM-DD}-{slug}/   note.md + page.html
+│
 ├── wayfinding/{YYYY-MM-DD}-{slug}/   PIPELINE 1 — Weg ist unklar: map.md + tickets/
 ├── changes/{YYYY-MM-DD}-{slug}/      PIPELINE 2 — laufendes Vorhaben
 ├── archive/{YYYY-MM}/                PIPELINE 3 — abgeschlossene Changes
@@ -58,7 +61,7 @@ docs/
 
 **Die Pipeline laeuft in eine Richtung**: `wayfinding/` → `changes/` → `archive/` → `specs/`. Ein Change wird erst aufgemacht, wenn der Weg feststeht, die Ist-Spec aendert sich ausschliesslich beim Archivieren. Trifft ein Change unterwegs auf Nebel, eroeffnet er eine **neue** Wegfindung, statt die Frage im Proposal zu parken.
 
-**`project/` und `records/` sind keine Stationen, sondern Fundus.** ADRs, Recherchen, Quellen und Arbeitslog-Eintraege entstehen in jeder Phase — vor einer Wegfindung genauso wie waehrend eines Changes — und werden von ueberall verlinkt, nicht davor oder dahinter einsortiert.
+**`project/`, `records/` und `artifacts/` sind keine Stationen, sondern Fundus.** ADRs, Recherchen, Quellen, Arbeitslog-Eintraege und veroeffentlichte Seiten entstehen in jeder Phase — vor einer Wegfindung genauso wie waehrend eines Changes — und werden von ueberall verlinkt, nicht davor oder dahinter einsortiert.
 
 **Wegfindung traegt eine Karte je Vorhaben, und die Karte ist Index, kein Speicher.** Eine beantwortete Frage verlaesst sie und wird ein ADR bzw. ein Recherche-Bericht im Fundus; die Karte behaelt nur eine Zeile mit Verweis. Vorlagen dazu in Abschnitt 6.
 
@@ -156,13 +159,66 @@ Die Mechanik steht im Skill `traceability`, hier steht nur, wie die Notes ausseh
 
 **Was auch mit `records:` nicht hineingehoert**: Zeiten, Rechnungen, Angebote und alles andere Kaufmaennische — das ist Buchhaltung und gehoert in den Tracker des Providers. Und Personenbezogenes ohne Arbeitsbezug, siehe Abschnitt 7.
 
+## 4b. Artefakte — was veroeffentlicht wurde, liegt auch hier
+
+Eine veroeffentlichte Seite ist ein Arbeitsergebnis mit Publikum: ein Bericht, ein Architekturbild,
+eine Uebersicht, die jemand ueber einen Link bekommt. Sie liegt auf dem Artefakt-Server des
+Providers — und **zusaetzlich** hier, als Fundus neben `project/` und `records/`.
+
+Der Grund ist der Server selbst: er fuehrt keine Versionshistorie und kein Backup. Ein Update
+ersetzt den Inhalt ersatzlos, eine geloeschte Seite ist weg, und der Titel steht mit dem Anlegen
+fest und laesst sich danach nicht mehr aendern. Ohne Kopie im Layer gibt es die vorige Fassung
+nirgends mehr. Was hier liegt, ist deshalb nicht die Kopie einer Kopie, sondern die einzige Fassung
+mit Geschichte.
+
+```
+docs/artifacts/{YYYY-MM-DD}-{slug}/
+├── note.md      Adresse, Sichtbarkeit, Anlass
+└── page.html    das Veroeffentlichte, unveraendert
+```
+
+### artifacts/{YYYY-MM-DD}-{slug}/note.md
+
+```markdown
+---
+type: artifact
+title: Sub-Agenten begrenzen
+updated: 2026-09-03
+artifact_id: a7f3c9
+url: https://artifacts.traffino.com/private/a7f3c9
+visibility: private | public
+source:              # relativer Pfad auf die Note, aus der die Seite entstand; leer, wenn keine
+---
+
+Wofuer die Seite gebaut wurde und wer sie bekommen hat. Zwei bis drei Saetze — nicht der Inhalt der
+Seite, der steht nebenan.
+```
+
+**`artifact_id` ist die Adresse und wird gebraucht, nicht dekoriert.** Nachbessern heisst denselben
+Eintrag ersetzen — dasselbe Werkzeug mit derselben id —, nicht ein zweites Mal veroeffentlichen:
+sonst liegen zwei Fassungen unter zwei Links, und der zuerst verschickte zeigt auf die alte.
+Wechselt die Sichtbarkeit, wechselt die URL ihren Prefix; `visibility:` und `url:` werden dann
+**gemeinsam** nachgezogen, sonst zeigt die Note auf einen toten Link.
+
+**Nicht jede erzeugte HTML-Datei gehoert hierher.** Die Frage ist nie „ist es HTML?", sondern
+„entsteht es auf Knopfdruck neu?":
+
+| Fall | Ablage |
+|---|---|
+| Von Hand gesetzt, nicht wiederherstellbar — ein `diagram-design`-Bild, eine direkt geschriebene Seite | `artifacts/` |
+| Aus einer Note gerendert, jederzeit neu erzeugbar | nicht ablegen, neu erzeugen |
+| Werkzeug-Ausgabe (`graphify-out/` o.ae.) | nie, siehe Abschnitt 7 |
+
+Haengt in einer Session gar kein Artefakt-Werkzeug, entsteht auch kein Eintrag: dann wird nicht
+veroeffentlicht, sondern im Terminal berichtet oder als Datei abgelegt.
+
 ## 5. Gemeinsames Frontmatter
 
 Jede Note traegt mindestens:
 
 ```yaml
 ---
-type: index | decision | spec | change | worklog | map | ticket | person | meeting | research | source | archive
+type: index | decision | spec | change | worklog | map | ticket | person | meeting | research | source | artifact | archive
 title: Kurztitel
 updated: 2026-08-12          # letzte inhaltliche Aenderung
 ---
@@ -181,6 +237,10 @@ Datensaetze fuehrt, `records: true` — beides gibt es nur dort.
 traegt `type: research`, `project/sources/` traegt `type: source` — an der User-Ebene laengst in
 Gebrauch, aber nirgends aufgeschrieben, bis eine frisch umgezogene Ebene am 2026-08-31 `type:
 research` waehlte, ohne dass es hier stand.
+
+**`artifact` traegt genau die `note.md` neben einer veroeffentlichten Seite** — Schema und
+Begruendung in Abschnitt 4b. Das `page.html` daneben traegt kein Frontmatter; HTML kann keins
+tragen, und ein zweiter Ort fuer dieselben Angaben waere eine Dublette, die auseinanderlaeuft.
 
 **`type: archive` fehlte aus demselben Grund und war laengst in Gebrauch, bevor es hier stand**:
 eine Note in `archive/`, die **nicht** plan- oder change-foermig ist — eine abgeschlossene
@@ -321,7 +381,9 @@ result:              # relativer Pfad auf ADR/Recherche, nur bei status: answere
 - **Secrets, Zugangsdaten, `.env`-Inhalte** — nie, auf keiner Ebene.
 - **Daten eines anderen Kunden/Tenants** in einem Repo, das mehrere buendelt. Die Trennlinie ist hart.
 - **Personenbezogenes ohne Arbeitsbezug** (Privatadressen, Geburtstage, Gesundheit) — auch nicht in der Datenhaltung des Providers.
-- **Generierte Artefakte** (`graphify-out/` o.ae.) — derived state wird nicht dokumentiert, sondern regeneriert.
+- **Werkzeug-Ausgaben** (`graphify-out/` o.ae.) — derived state wird nicht dokumentiert, sondern
+  regeneriert. Das trifft **nicht** die veroeffentlichten Seiten aus Abschnitt 4b: die sind von Hand
+  gesetzt und nicht wiederherstellbar, weil der Artefakt-Server keine Versionshistorie fuehrt.
 
 ## 8. Normatives wird Skill, nicht Dokument
 
@@ -337,6 +399,8 @@ Zwei Werkzeuge mit klarer Arbeitsteilung:
 - **Skill `diagram-design`** fuer alles, was jemandem **gezeigt** wird — Praesentationen, Angebote, Architekturbilder. Erzeugt eigenstaendiges HTML mit inline-SVG, das von Hand gesetzt ist und sich nicht sinnvoll diffen laesst.
 
 Faustregel: aendert sich das Diagramm mit dem Code, ist es mermaid. Wird es einmal gebaut und dann gezeigt, ist es `diagram-design`.
+
+Ein `diagram-design`-Bild, das veroeffentlicht wird, landet danach in `artifacts/` (Abschnitt 4b) — es ist von Hand gesetzt und entsteht nicht auf Knopfdruck neu.
 
 ## 10. Pflege
 
