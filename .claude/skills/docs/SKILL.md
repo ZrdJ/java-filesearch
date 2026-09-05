@@ -4,7 +4,7 @@ version: 7
 description: Wegweiser fuer den docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket, Artefakt). Triggers auf docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, veroeffentlichte Seite ablegen, "wo gehoert das hin".
 # GENERIERT aus personal/skills-ref/docs/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/docs/.
 source: personal-provider-ref
-ref-hash: sha256:b773885aad2c43ba22181c2a55725ad142653a4b2a26683da13071c43e4070c2
+ref-hash: sha256:14affee1f1c6b038392d14e00dc658d984d328b1f66ab43a1b164251ae8a41e5
 ---
 
 # docs
@@ -184,8 +184,8 @@ docs/artifacts/{YYYY-MM-DD}-{slug}/
 type: artifact
 title: Sub-Agenten begrenzen
 updated: 2026-09-03
-artifact_id: a7f3c9
-url: https://artifacts.traffino.com/private/a7f3c9
+artifact_id: V1StGXR8_Z5jdHi6B-myT
+url: https://artifact.traffino.com/private/artifact/V1StGXR8_Z5jdHi6B-myT
 visibility: private | public
 source:              # relativer Pfad auf die Note, aus der die Seite entstand; leer, wenn keine
 ---
