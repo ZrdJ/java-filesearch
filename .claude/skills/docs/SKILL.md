@@ -4,7 +4,7 @@ version: 7
 description: Wegweiser fuer den docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket, Artefakt). Triggers auf docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, veroeffentlichte Seite ablegen, "wo gehoert das hin".
 # GENERIERT aus personal/skills-ref/docs/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/docs/.
 source: personal-provider-ref
-ref-hash: sha256:14affee1f1c6b038392d14e00dc658d984d328b1f66ab43a1b164251ae8a41e5
+ref-hash: sha256:17e09c9aebdf35ff4d20dcc7adbeacd621c2da9a12b8d1f084f4403ede591c0a
 ---
 
 # docs
@@ -170,6 +170,14 @@ ersetzt den Inhalt ersatzlos, eine geloeschte Seite ist weg, und der Titel steht
 fest und laesst sich danach nicht mehr aendern. Ohne Kopie im Layer gibt es die vorige Fassung
 nirgends mehr. Was hier liegt, ist deshalb nicht die Kopie einer Kopie, sondern die einzige Fassung
 mit Geschichte.
+
+Dazu kommt seit dem 2026-09-07 ein zweiter Grund, der nichts mit Fehlbedienung zu tun hat: **jede
+veroeffentlichte Seite hat eine Aufbewahrungsdauer und verschwindet von selbst.** Ohne andere
+Angabe beim Veroeffentlichen sind das bei einem Artefakt 24 Monate ab dem Anlegen, bei einem Bild
+ein Monat — ein Bild, das in einer Seite haengt, ist also typischerweise frueher weg als die Seite.
+Danach antwortet der Link mit 404, und die Frist laesst sich nachtraeglich nicht verlaengern. Was
+hier abgelegt ist, ueberlebt das; was nur dort lag, nicht. Welche Fristen es gibt und wie eine
+andere gewaehlt wird, steht im Skill `artifact-server`.
 
 ```
 docs/artifacts/{YYYY-MM-DD}-{slug}/
