@@ -93,31 +93,63 @@ mvn wrapper:wrapper -Dmaven=3.9.12
 
 ---
 
-### Assembly Plugin (Fat JAR)
+### Assembly (Anwendungs-JAR plus `lib/`)
+
+Eine Anwendung wird **nie** als Fat JAR gebaut — weder mit `maven-shade-plugin` noch mit dem
+`jar-with-dependencies`-Deskriptor des Assembly-Plugins. Beide entpacken die Abhaengigkeiten in ein
+einziges Archiv, und dabei ueberschreiben sich Dateien, die mehrere Jars an derselben Stelle
+mitbringen: `META-INF/services`, `reference.conf`, Signaturdateien. Der Shade kann das mit
+Transformern reparieren, `jar-with-dependencies` kann es gar nicht — und eine Reparatur, die still
+scheitert, faellt erst beim Start auf, nicht im gruenen Build.
+
+Stattdessen bleibt das Anwendungs-JAR fuer sich, die Abhaengigkeiten liegen als eigene Jars daneben,
+und der Klassenpfad steht im Manifest.
 
 ```xml
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-assembly-plugin</artifactId>
-    <version>3.8.0</version>
-    <configuration>
-        <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
-        <archive>
-            <manifest>
-                <mainClass>net.example.Application</mainClass>
-            </manifest>
-        </archive>
-    </configuration>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <version>${maven.dependency.plugin.version}</version>
     <executions>
         <execution>
+            <id>copy-dependencies</id>
             <phase>package</phase>
-            <goals><goal>single</goal></goals>
+            <goals><goal>copy-dependencies</goal></goals>
+            <configuration>
+                <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                <includeScope>runtime</includeScope>
+            </configuration>
         </execution>
     </executions>
 </plugin>
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <version>${maven.jar.plugin.version}</version>
+    <configuration>
+        <archive>
+            <manifest>
+                <mainClass>net.example.Application</mainClass>
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>lib/</classpathPrefix>
+            </manifest>
+        </archive>
+    </configuration>
+</plugin>
 ```
+
+`java -jar target/app.jar` funktioniert damit unveraendert: `Class-Path` im Manifest wird relativ zum
+Jar aufgeloest. Zusaetzlich bleibt lesbar, welche Version welcher Abhaengigkeit ausgeliefert wird —
+genau das verliert ein Fat JAR, und mit ihm die Grundlage fuer CVE-Scans und das Nachziehen einer
+einzelnen Abhaengigkeit.
+
+Ein verteilbares Archiv (`tar.gz`, `zip`) baut `maven-assembly-plugin` mit einem eigenen Deskriptor
+darauf auf — erst dann, wenn ein Deployment eines braucht.
+
+Bei einem `module-info.java` kommt hinzu, dass ein Fat JAR den Moduldeskriptor verwirft: `shade`
+fuehrt ihn nicht zusammen, und die Anwendung laeuft danach aus dem unbenannten Modul. Die Assembly
+erhaelt ihn.
 
 ---
 
@@ -144,4 +176,4 @@ mvn wrapper:wrapper -Dmaven=3.9.12
 - [ ] pom.xml konfiguriert
 - [ ] JDK Version gesetzt
 - [ ] JUnit hinzugefuegt
-- [ ] Assembly Plugin (optional)
+- [ ] Abhaengigkeiten als eigene Jars plus Manifest-Klassenpfad (nie ein Fat JAR)

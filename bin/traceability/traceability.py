@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # GENERIERT aus personal/tools-ref/traceability/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/tools-ref/traceability/.
 # source: personal-provider-ref
-# ref-hash: sha256:e76cfbc5dcf2fb98d5403fbe8552b57c92abcdd461245c305280e08ca30c8843
+# ref-hash: sha256:a2541ffdcf3e5f58f8644626143ebe99d85fe1dc5b3d7900c597667b84f3b757
 """
 traceability.py — prueft die Verkettung zwischen Anforderungen und Tests.
 
@@ -159,20 +159,32 @@ def read_spec(path: Path, is_delta: bool):
 
 
 def collect_requirements(spec_root: Path):
-    """Ist-Spec zuerst, Delta-Specs ueberschreiben — so gewinnt der laufende Change."""
+    """Ist-Spec zuerst, Delta-Specs ueberschreiben — so gewinnt der laufende Change.
+
+    Definieren mehrere offene Delta-Specs denselben Kurznamen, gewinnt die
+    hoechste Revision, nicht die zuletzt in Sortierreihenfolge gelesene Datei.
+    """
     definitions, duplicates = {}, []
     removed, tombstones = {}, {}
+    delta_defined = set()
 
     def record(defs, source_is_delta):
         for a in defs:
             previous = definitions.get(a.base)
-            if previous is not None and not source_is_delta:
-                duplicates.append(Finding(
-                    "doppelter Kurzname",
-                    f"req~{a.base} steht auch in {previous.file}:{previous.line}",
-                    a.file, a.line))
-                continue
+            if previous is not None:
+                if not source_is_delta:
+                    duplicates.append(Finding(
+                        "doppelter Kurzname",
+                        f"req~{a.base} steht auch in {previous.file}:{previous.line}",
+                        a.file, a.line))
+                    continue
+                # Revisionen werden der Reihe nach vergeben, die hoehere ist
+                # immer das spaetere Wort — Dateireihenfolge entscheidet nicht.
+                if a.base in delta_defined and a.revision < previous.revision:
+                    continue
             definitions[a.base] = a
+            if source_is_delta:
+                delta_defined.add(a.base)
 
     specs_dir = spec_root / "specs"
     if specs_dir.is_dir():
@@ -563,6 +575,20 @@ FIXTURES = {
             "## ADDED Requirements\n\n### Requirement: Neu\n"
             "`req~zugang.ganz-neu~1`\n",
         "a_test.go": "// [impl->req~zugang.ganz-neu~1]\n",
+    }, []),
+
+    # Zwei offene Delta-Specs auf demselben Kurznamen: "b" sortiert vor "g",
+    # die niedrigere Revision wird also NACH der hoeheren gelesen. Gewaenne
+    # die zuletzt gelesene Datei (der fruehere Fehler), stuende die Anforderung
+    # auf ~2 und der Verweis auf ~3 gaelte faelschlich als vorgegriffen.
+    "delta ueberholt delta: hoehere revision gewinnt trotz dateireihenfolge": ({
+        "docs/changes/2026-09-21-bot-name-patterns/specs/pulls/spec.md":
+            "## MODIFIED Requirements\n\n### Requirement: Bot-Filter\n"
+            "`req~pulls.bot-filter~3`\n",
+        "docs/changes/2026-09-21-gitea-bot-logins/specs/pulls/spec.md":
+            "## MODIFIED Requirements\n\n### Requirement: Bot-Filter\n"
+            "`req~pulls.bot-filter~2`\n",
+        "a_test.go": "// [impl->req~pulls.bot-filter~3]\n",
     }, []),
 
     "doppelter kurzname": ({
