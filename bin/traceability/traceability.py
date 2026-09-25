@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # GENERIERT aus personal/tools-ref/traceability/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/tools-ref/traceability/.
 # source: personal-provider-ref
-# ref-hash: sha256:a2541ffdcf3e5f58f8644626143ebe99d85fe1dc5b3d7900c597667b84f3b757
+# ref-hash: sha256:047cdfc4debdf6cb8da64cf94519f3fad82bdda043adb555922c7c776161d95a
 """
 traceability.py — prueft die Verkettung zwischen Anforderungen und Tests.
 
@@ -51,8 +51,8 @@ SUCCESSOR = re.compile(r"^Superseded by:\s*`req~([a-z0-9][a-z0-9.\-]*)~(\d+)`\s*
 REFERENCE = re.compile(r"\[impl->req~([a-z0-9][a-z0-9.\-]*)~(\d+)\]")
 
 TEST_PATTERNS = ("*_test.go", "*.test.ts", "*.test.tsx", "*.spec.ts", "*.spec.tsx",
-                  "*Test.java")
-SOURCE_SUFFIXES = (".go", ".ts", ".tsx", ".java")
+                  "*.test.js", "*.test.mjs", "*.spec.js", "*.spec.mjs", "*Test.java")
+SOURCE_SUFFIXES = (".go", ".ts", ".tsx", ".js", ".mjs", ".java")
 
 SKIP = {"node_modules", ".git", "dist", "coverage", ".pnpm-store",
         "graphify-out", "vendor", "__pycache__", "target"}
@@ -546,6 +546,22 @@ FIXTURES = {
         "a_test.go": "// [impl->req~zugang.gibt-es-nicht~1]\n",
     }, ["nicht aufloesbar"]),
 
+    "sauber, js": ({
+        "docs/specs/zugang/spec.md":
+            "### Requirement: Ohne Anmeldung kein Zugriff\n"
+            "`req~zugang.ohne-anmeldung~1`\n",
+        "test/herdr-tui/compose.test.mjs":
+            "// [impl->req~zugang.ohne-anmeldung~1]\n"
+            "test('compose', () => {});\n",
+    }, []),
+
+    "toter verweis in js-test": ({
+        "docs/specs/zugang/spec.md":
+            "### Requirement: Ohne Anmeldung kein Zugriff\n"
+            "`req~zugang.ohne-anmeldung~1`\n",
+        "compose.test.js": "// [impl->req~zugang.gibt-es-nicht~1]\n",
+    }, ["nicht aufloesbar"]),
+
     "veraltete Revision": ({
         "docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
@@ -726,6 +742,9 @@ def selftest() -> int:
                 failures.append(f"  {name}: *Test.java nicht gefunden oder target/ nicht "
                                  f"uebersprungen (erwartet 1 Verweis, gezaehlt "
                                  f"{counts['zugang.ohne-anmeldung']})")
+            elif name == "sauber, js" and counts["zugang.ohne-anmeldung"] != 1:
+                failures.append(f"  {name}: *.test.mjs nicht gefunden (erwartet 1 Verweis, "
+                                 f"gezaehlt {counts['zugang.ohne-anmeldung']})")
             elif name == "records: meeting ohne folgen" and (
                     records is None or records[1]["NWC-2026-08-11"][1] != 0):
                 failures.append(f"  {name}: Meeting wurde nicht als Ziel mit 0 Folgen gezaehlt")
