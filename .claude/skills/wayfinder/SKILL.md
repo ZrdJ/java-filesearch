@@ -1,13 +1,13 @@
 ---
 name: wayfinder
-version: 1
+version: 2
 license: MIT
 upstream: https://github.com/mattpocock/skills
 upstream-commit: 8b78b531ab965735c5dc74f6f7a219e1e37326df
-description: Ein Vorhaben, dessen Weg noch nicht feststeht, als Karte offener Fragen fuehren und Ticket fuer Ticket aufloesen, bis der Weg klar ist und ein Change abgeleitet werden kann. Legt Karten unter docs/wayfinding/ an, trennt scharfe Fragen vom Nebel, haelt Blockierungen fest und schliesst mit einem Sondierungsergebnis. Triggers auf Wegfindung, Karte, unklarer Weg, "wie gehen wir das an", Vorhaben sondieren, offene Fragen sammeln, Nebel, Out of Scope, "wissen noch nicht was wir bauen".
+description: Ein Vorhaben, dessen Weg noch nicht feststeht, als Karte offener Fragen fuehren und Ticket fuer Ticket aufloesen, bis der Weg klar ist und ein Change abgeleitet werden kann. Legt Karten unter .docs/wayfinding/ an, trennt scharfe Fragen vom Nebel, haelt Blockierungen fest und schliesst mit einem Sondierungsergebnis. Triggers auf Wegfindung, Karte, unklarer Weg, "wie gehen wir das an", Vorhaben sondieren, offene Fragen sammeln, Nebel, Out of Scope, "wissen noch nicht was wir bauen".
 # GENERIERT aus personal/skills-ref/wayfinder/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/wayfinder/.
 source: personal-provider-ref
-ref-hash: sha256:97ac9b071336d1fdaff5ec1757f109ffd774c1a004219dab42cd380678670811
+ref-hash: sha256:322008c19f56e0df3a266f61298f4aace6a112457f33a60e79338cf555125c01
 ---
 
 # wayfinder
@@ -16,7 +16,7 @@ Fuer Vorhaben, die **zu gross fuer eine Session** sind und deren Weg **noch nich
 
 ## Herkunft und Zuschnitt
 
-Uebernommen aus [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, Commit `8b78b53`), **nicht verbatim**. Uebernommen sind das Konzept und seine Begriffe: Karte als Index, Entscheidungs-Tickets, Nebel, Out of Scope, ein Ticket je Session. Ersetzt ist die Mechanik: das Original setzt einen **Issue-Tracker** voraus (Child-Issues, native Blocking-Relationen, Assignee als Anspruch). Hier lebt alles als Markdown unter `docs/wayfinding/`, wo die jeweilige Ebene keinen Tracker fuehrt — ob sie das tut, entscheidet deren CLAUDE.md.
+Uebernommen aus [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, Commit `8b78b53`), **nicht verbatim**. Uebernommen sind das Konzept und seine Begriffe: Karte als Index, Entscheidungs-Tickets, Nebel, Out of Scope, ein Ticket je Session. Ersetzt ist die Mechanik: das Original setzt einen **Issue-Tracker** voraus (Child-Issues, native Blocking-Relationen, Assignee als Anspruch). Hier lebt alles als Markdown unter `.docs/wayfinding/`, wo die jeweilige Ebene keinen Tracker fuehrt — ob sie das tut, entscheidet deren CLAUDE.md.
 
 Die Verweise des Originals auf `/grilling`, `/domain-modeling`, `/research` und `/prototype` zeigen auf Skills, die es hier nicht gibt. Womit sie ersetzt sind, steht unter [Werkzeuge](#werkzeuge).
 
@@ -33,7 +33,7 @@ Weg unklar        Vorhaben       erledigt       Ist-Zustand
 
 Ein Change setzt voraus, dass Problem, Loesung und Scope feststehen. Solange sie das nicht tun, wird **kein** Change angelegt. Trifft ein laufender Change auf Nebel, eroeffnet er eine **neue** Karte, statt die Frage im Proposal zu parken.
 
-Begruendung des Schnitts: `docs/project/decisions/2026-08-14-wegfindung-als-eigene-station.md`.
+Begruendung des Schnitts: `.docs/project/decisions/2026-08-14-wegfindung-als-eigene-station.md`.
 
 ## Das eine Prinzip: planen, nicht bauen
 
@@ -48,7 +48,7 @@ Die einzige Ausnahme ist die Ticket-Art `task` — siehe unten.
 Ein Verzeichnis **je Vorhaben**. Mehrere Wegfindungen duerfen gleichzeitig laufen; eine globale Karte gibt es nicht, weil eine Karte genau ein Ziel hat und mit dessen Erreichen schliesst.
 
 ```
-docs/wayfinding/{YYYY-MM-DD}-{slug}/
+.docs/wayfinding/{YYYY-MM-DD}-{slug}/
 ├── map.md
 └── tickets/{nr}-{slug}.md
 ```
@@ -136,7 +136,7 @@ Die Karte schliesst, wenn kein Ticket mehr offen und der Nebel leer ist.
 
 Daraus folgt eins von zwei Dingen:
 
-- **Ein Change.** `docs/changes/{YYYY-MM-DD}-{slug}/` anlegen (Skill `spec`, Phase 1), die Karte im Proposal unter `origin:` nennen.
+- **Ein Change.** `.docs/changes/{YYYY-MM-DD}-{slug}/` anlegen (Skill `spec`, Phase 1), die Karte im Proposal unter `origin:` nennen.
 - **Kein Change.** Auch das ist ein Ergebnis. `## The Path` haelt fest, warum nicht gebaut wird — und ist der Grund, warum die Wegfindung eine eigene Station ist: sonst haette dieses Ergebnis keinen Ort.
 
 Die Karte bleibt danach liegen. Sie wandert **nicht** ins `archive/` — dort liegen Changes, und das Proposal verweist auf sie.
@@ -151,7 +151,7 @@ Das Original verweist auf Skills, die es hier nicht gibt. Ersatz:
 | `/domain-modeling` | Skills `docs` und `spec` — die Begriffsregel „ein Begriff, eine Bedeutung" steht dort bereits |
 | `/prototype` | mermaid in der `.md` fuer alles, was sich mit dem Code aendert; `diagram-design` fuer Bilder, die gezeigt werden |
 | `/research` | Sub-Agent per `Agent`-Tool, Modell nach der Routing-Tabelle des Users. Der Agent bekommt die Frage und liefert den Bericht — er entscheidet nicht. |
-| `/setup-matt-pocock-skills` | entfaellt, der Ort steht fest (`docs/wayfinding/`) |
+| `/setup-matt-pocock-skills` | entfaellt, der Ort steht fest (`.docs/wayfinding/`) |
 
 Auf welcher Ebene die Karte liegt, entscheidet die Ablageregel der CLAUDE.md-Hierarchie — dieselbe Frage wie fuer jede andere Note.
 

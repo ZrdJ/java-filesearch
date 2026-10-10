@@ -28,7 +28,7 @@ Mindestens ein echter Ausschluss — "nichts" ist fast nie die Wahrheit.}
 
 {Ausnahme, kein Sammelbecken: nur bewusst offen Gelassenes, meist weil
 die Antwort bei einem Dritten liegt (Kunde, Betreiber). Haengt ein Slice
-an der Antwort, gehoert die Frage in eine Wegfindung (docs/wayfinding/),
+an der Antwort, gehoert die Frage in eine Wegfindung (.docs/wayfinding/),
 nicht hierher.}
 
 - {Frage} → offen, {an wen}

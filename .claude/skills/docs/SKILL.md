@@ -1,35 +1,37 @@
 ---
 name: docs
-version: 7
-description: Wegweiser fuer den docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket, Artefakt). Triggers auf docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, veroeffentlichte Seite ablegen, "wo gehoert das hin".
+version: 8
+description: Wegweiser fuer den .docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket, Artefakt). Triggers auf .docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, veroeffentlichte Seite ablegen, "wo gehoert das hin".
 # GENERIERT aus personal/skills-ref/docs/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/docs/.
 source: personal-provider-ref
-ref-hash: sha256:17e09c9aebdf35ff4d20dcc7adbeacd621c2da9a12b8d1f084f4403ede591c0a
+ref-hash: sha256:70d966c4922083c346eed6d2e66bea75342559f1107978279da8fb6bb02fd011
 ---
 
 # docs
 
-Der `docs/`-Layer ersetzt in diesem Workspace den Vault. Dieser Skill beantwortet zwei Fragen: **wo liegt es** und **wie sieht es aus**. Lifecycle-Mechanik fuer Changes steht in `spec`, Meeting-Erfassung in `meeting`.
+Der `.docs/`-Layer ersetzt in diesem Workspace den Vault. Dieser Skill beantwortet zwei Fragen: **wo liegt es** und **wie sieht es aus**. Lifecycle-Mechanik fuer Changes steht in `spec`, Meeting-Erfassung in `meeting`.
+
+**Der Layer heisst `.docs/`, mit Punkt** (Entscheidung des Users, 2026-10-10; bis dahin `docs/`). Ein Verzeichnis ohne Punkt sieht aus wie ein gewoehnliches Projektverzeichnis und wurde immer wieder dafuer gehalten; mit Punkt steht der Layer neben `.github/` und `.devcontainer/`, und ein `docs/` ohne Punkt ist eindeutig ausgelieferte Produktdokumentation. Die eine Folge, die man kennen muss: **Werkzeuge, die Punkt-Verzeichnisse ueberspringen, sehen den Layer nicht von selbst** — `rg` ohne `--hidden`, der Shell-Glob `*`, `ls` ohne `-a`, und Muster in `.dockerignore` oder `.prettierignore`, die auf `docs/` lauteten. Beispiel: `rg "status: rejected"` aus der Repo-Wurzel findet keinen einzigen ADR, `rg --hidden "status: rejected" .docs/project/decisions/` findet sie alle — der ausdruecklich genannte Pfad reicht dabei schon, `--hidden` braucht nur die Suche von weiter oben. Ebenen, die noch nicht umbenannt sind, tragen bis dahin weiter `docs/`; der Skill-Name `docs` bleibt ohne Punkt.
 
 ## 1. Ebene bestimmen — erste zutreffende Frage gewinnt
 
 | # | Frage | Ablage |
 |---|---|---|
-| 1 | **Datensatz** — Person, Firma, Termin, Projekt, Todo, erfasste Zeit? | Datenhaltung des Providers (CRM, MCP-Tools, o.ae.) — **nicht** `docs/`. Welche das konkret ist, steht in der CLAUDE.md des Providers. |
-| 2 | Arbeitsweise/Konfiguration statt Produkt? | `~/.claude/docs/` — **ausserhalb** dieses Workspaces |
-| 3 | Betrifft mehr als einen Sub-Bereich? | `CLAUDE.md` des WS-Roots, nicht `docs/` |
-| 4 | Betrifft einen Sub-Bereich als Ganzes? | `{sub-bereich}/docs/` |
-| 5 | Genau ein Repo? | `{sub-bereich}/{repo}/docs/` |
+| 1 | **Datensatz** — Person, Firma, Termin, Projekt, Todo, erfasste Zeit? | Datenhaltung des Providers (CRM, MCP-Tools, o.ae.) — **nicht** `.docs/`. Welche das konkret ist, steht in der CLAUDE.md des Providers. |
+| 2 | Arbeitsweise/Konfiguration statt Produkt? | `~/.claude/.docs/` — **ausserhalb** dieses Workspaces |
+| 3 | Betrifft mehr als einen Sub-Bereich? | `CLAUDE.md` des WS-Roots, nicht `.docs/` |
+| 4 | Betrifft einen Sub-Bereich als Ganzes? | `{sub-bereich}/.docs/` |
+| 5 | Genau ein Repo? | `{sub-bereich}/{repo}/.docs/` |
 
 Frage 1 ist die wichtigste, weil sie am haeufigsten falsch beantwortet wird. Die Trennlinie ist **Datensatz vs. Dokument**:
 
-> Die Datenhaltung des Providers haelt den **Termin** und die **Person**. Die `docs/` halten die **Entscheidung**, die daraus folgte. Das Gespraech ist Quelle, die Entscheidung ist Artefakt.
+> Die Datenhaltung des Providers haelt den **Termin** und die **Person**. Die `.docs/` halten die **Entscheidung**, die daraus folgte. Das Gespraech ist Quelle, die Entscheidung ist Artefakt.
 
-Ein Gespraech, in dem eine Architekturfrage entschieden wird, erzeugt also **zwei** Dinge: einen Datensatz in der Datenhaltung des Providers und einen ADR in `docs/project/decisions/`. Nicht eins von beiden, und nicht dasselbe zweimal.
+Ein Gespraech, in dem eine Architekturfrage entschieden wird, erzeugt also **zwei** Dinge: einen Datensatz in der Datenhaltung des Providers und einen ADR in `.docs/project/decisions/`. Nicht eins von beiden, und nicht dasselbe zweimal.
 
 Zwei Faustregeln dazu:
 
-- **Ein Repo, ein `docs/`.** Buendelt ein Repo mehrere Projekte in Unterordnern, gibt es trotzdem genau **ein** `docs/` — auf Repo-Ebene, nicht je Projekt-Unterordner. Projektbezug wird ueber `projects:` im Frontmatter hergestellt, nicht ueber den Pfad.
+- **Ein Repo, ein `.docs/`.** Buendelt ein Repo mehrere Projekte in Unterordnern, gibt es trotzdem genau **ein** `.docs/` — auf Repo-Ebene, nicht je Projekt-Unterordner. Projektbezug wird ueber `projects:` im Frontmatter hergestellt, nicht ueber den Pfad.
 - **Keine Dubletten ueber Ebenen.** Wandert etwas hoch, wird es unten geloescht oder verlinkt.
 
 ## 2. Ordnersatz — ein Fundus, eine Pipeline
@@ -37,7 +39,7 @@ Zwei Faustregeln dazu:
 Auf jeder Ebene derselbe Satz, aber nicht mehr vier gleichrangige Ordner, sondern zwei Sorten:
 
 ```
-docs/
+.docs/
 ├── README.md          Index dieser Ebene
 │
 ├── project/            FUNDUS — von jeder Station verlinkbar und beschreibbar
@@ -77,25 +79,25 @@ Zwei Ausnahmen von der Strukturregel, weil sie **im** Satz stehen und nicht um i
 
 ## 4. Inhaltssprache — `lang:` und seine Vererbung
 
-Welche Sprache eine Note traegt, steht nicht in ihr selbst, sondern als `lang:` im Frontmatter der `docs/README.md` der Ebene, auf der sie liegt. Die Einstellung vererbt nach unten — WS-Root → Sub-Bereich → Repo —, der Default ist `en`. Eine Repo-Ebene ohne eigene `docs/README.md` traegt also die Sprache ihres Sub-Bereichs, dieser die des WS-Roots, sofern niemand sie unterwegs umstellt.
+Welche Sprache eine Note traegt, steht nicht in ihr selbst, sondern als `lang:` im Frontmatter der `.docs/README.md` der Ebene, auf der sie liegt. Die Einstellung vererbt nach unten — WS-Root → Sub-Bereich → Repo —, der Default ist `en`. Eine Repo-Ebene ohne eigene `.docs/README.md` traegt also die Sprache ihres Sub-Bereichs, dieser die des WS-Roots, sofern niemand sie unterwegs umstellt.
 
-Geltend ist die Sprache der **naechstgelegenen** `docs/README.md`, von der eigenen Ebene aus nach oben gesucht — nicht pauschal der Wert des WS-Roots. Eine Note in `{sub-bereich}/{repo}/docs/` folgt `{sub-bereich}/{repo}/docs/README.md`, wenn die existiert und `lang:` traegt, sonst der von `{sub-bereich}/docs/README.md`, sonst der des WS-Roots.
+Geltend ist die Sprache der **naechstgelegenen** `.docs/README.md`, von der eigenen Ebene aus nach oben gesucht — nicht pauschal der Wert des WS-Roots. Eine Note in `{sub-bereich}/{repo}/.docs/` folgt `{sub-bereich}/{repo}/.docs/README.md`, wenn die existiert und `lang:` traegt, sonst der von `{sub-bereich}/.docs/README.md`, sonst der des WS-Roots.
 
-`lang:` steht bewusst in der `docs/README.md` und nicht in `repos.json`: der Ebenen-Index ist ohnehin Pflicht, es entsteht also kein neuer Ort. Ein uebergebenes Repo traegt seine Einstellung damit selbst mit, statt sie in einem Meta-Repo zurueckzulassen, dem es nicht mehr angehoert. Und WS-Root- und Sub-Bereich-Ebenen sind gar keine Repos — in `repos.json` haetten sie keinen Eintrag.
+`lang:` steht bewusst in der `.docs/README.md` und nicht in `repos.json`: der Ebenen-Index ist ohnehin Pflicht, es entsteht also kein neuer Ort. Ein uebergebenes Repo traegt seine Einstellung damit selbst mit, statt sie in einem Meta-Repo zurueckzulassen, dem es nicht mehr angehoert. Und WS-Root- und Sub-Bereich-Ebenen sind gar keine Repos — in `repos.json` haetten sie keinen Eintrag.
 
 ## 4a. Datensaetze — `records/`, und nur wo freigeschaltet
 
-Ein Datensatz ist eine Person, ein Termin, eine Firma — etwas, das **existiert**, im Gegensatz zu einer Entscheidung, die **begruendet**. Bis 2026-08-30 galt: Datensaetze gehoeren nicht in `docs/`, sondern in die Datenhaltung des Providers. Diese Regel hat nicht getragen. Sie wurde in `traffino` am 2026-08-12 beschlossen und verwies auf ein CRM; zweieinhalb Wochen spaeter lagen dort **drei** Dateien. Was nicht neben der Arbeit liegt, wird nicht gepflegt.
+Ein Datensatz ist eine Person, ein Termin, eine Firma — etwas, das **existiert**, im Gegensatz zu einer Entscheidung, die **begruendet**. Bis 2026-08-30 galt: Datensaetze gehoeren nicht in `.docs/`, sondern in die Datenhaltung des Providers. Diese Regel hat nicht getragen. Sie wurde in `traffino` am 2026-08-12 beschlossen und verwies auf ein CRM; zweieinhalb Wochen spaeter lagen dort **drei** Dateien. Was nicht neben der Arbeit liegt, wird nicht gepflegt.
 
 Seither gibt es `records/` — im Layer, aber als **Fundus**, nicht als Station der Pipeline. Ein Datensatz entsteht in jeder Phase und wird von ueberall verlinkt, genau wie `project/`.
 
 ```
-docs/records/
+.docs/records/
 ├── persons/{id}.md
 └── meetings/{YYYY-MM-DD}-{slug}.md
 ```
 
-**Der Zweig ist je Ebene freigeschaltet**, nicht ueberall an. Der Schalter steht im Frontmatter der `docs/README.md`, neben `lang:`, und vererbt genauso nach unten:
+**Der Zweig ist je Ebene freigeschaltet**, nicht ueberall an. Der Schalter steht im Frontmatter der `.docs/README.md`, neben `lang:`, und vererbt genauso nach unten:
 
 ```yaml
 ---
@@ -104,7 +106,7 @@ records: true
 ---
 ```
 
-Ohne den Schluessel bleibt der Zweig aus, und die Pruefung ueberspringt ihn still. Das ist Absicht: nicht jeder Provider will seine Personen im Repo, und wer einen Tracker hat, soll ihn behalten duerfen. Wo `records:` fehlt, gilt die alte Regel weiter — Datensaetze gehoeren dann nicht in `docs/`.
+Ohne den Schluessel bleibt der Zweig aus, und die Pruefung ueberspringt ihn still. Das ist Absicht: nicht jeder Provider will seine Personen im Repo, und wer einen Tracker hat, soll ihn behalten duerfen. Wo `records:` fehlt, gilt die alte Regel weiter — Datensaetze gehoeren dann nicht in `.docs/`.
 
 **Die Adresse eines Datensatzes wird einmal vergeben und danach eingefroren** — aus demselben Grund wie bei der Anforderungs-Kennung: ein abgeleiteter Name wandert mit dem Titel, ein vergebener nicht. Bei einer Person ist die Adresse der Dateiname, bei einem Termin die Themenblock-Id.
 
@@ -180,7 +182,7 @@ hier abgelegt ist, ueberlebt das; was nur dort lag, nicht. Welche Fristen es gib
 andere gewaehlt wird, steht im Skill `artifact-server`.
 
 ```
-docs/artifacts/{YYYY-MM-DD}-{slug}/
+.docs/artifacts/{YYYY-MM-DD}-{slug}/
 ├── note.md      Adresse, Sichtbarkeit, Anlass
 └── page.html    das Veroeffentlichte, unveraendert
 ```
@@ -234,7 +236,7 @@ updated: 2026-08-12          # letzte inhaltliche Aenderung
 
 Dateinamen durchgaengig `kebab-case.md`, datierte Notes mit `{YYYY-MM-DD}-`-Praefix.
 
-**`index` traegt genau eine Datei je Ebene: deren `docs/README.md`.** Sie ist keine Karte — eine
+**`index` traegt genau eine Datei je Ebene: deren `.docs/README.md`.** Sie ist keine Karte — eine
 `map.md` fuehrt offene Fragen eines Vorhabens, der Index beschreibt, was auf dieser Ebene liegt.
 Der Typ steht hier, weil er beim ersten Umzug ausserhalb von traffino gefehlt hat und jede Ebene
 sonst ihren eigenen Wert erfindet: gemessen am 2026-08-31 trug die User-Ebene `type: map`, ein

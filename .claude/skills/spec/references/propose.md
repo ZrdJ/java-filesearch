@@ -1,16 +1,16 @@
 # Phase 1 — propose
 
-Ein Vorhaben beschreiben, bevor Code entsteht. Ergebnis ist ein Verzeichnis `docs/changes/{YYYY-MM-DD}-{slug}/`.
+Ein Vorhaben beschreiben, bevor Code entsteht. Ergebnis ist ein Verzeichnis `.docs/changes/{YYYY-MM-DD}-{slug}/`.
 
 ## Vorher: steht der Weg ueberhaupt fest?
 
-**Erste Vorbedingung, gleichrangig zum Abgleich gegen Verworfenes.** Ein Proposal setzt voraus, dass Problem, Loesung und Scope feststehen. Steht das nicht fest, wird kein Change angelegt, sondern eine Wegfindung eroeffnet: `docs/wayfinding/{YYYY-MM-DD}-{slug}/`, Skill `wayfinder`.
+**Erste Vorbedingung, gleichrangig zum Abgleich gegen Verworfenes.** Ein Proposal setzt voraus, dass Problem, Loesung und Scope feststehen. Steht das nicht fest, wird kein Change angelegt, sondern eine Wegfindung eroeffnet: `.docs/wayfinding/{YYYY-MM-DD}-{slug}/`, Skill `wayfinder`.
 
 Kommt das Vorhaben aus einer **abgeschlossenen** Karte, wird sie im Frontmatter unter `origin:` genannt — im selben Referenz-Schema, das die Ebene sonst fuer Herkunft nutzt.
 
 ## Vorher: gegen Verworfenes abgleichen
 
-**Zweite Vorbedingung, ebenfalls vor der ersten Datei.** `docs/project/decisions/` nach `status: rejected` durchsehen. Kommt ein Thema zurueck, das schon einmal abgelehnt wurde, nicht stillschweigend neu aufsetzen, sondern benennen:
+**Zweite Vorbedingung, ebenfalls vor der ersten Datei.** `.docs/project/decisions/` nach `status: rejected` durchsehen. Kommt ein Thema zurueck, das schon einmal abgelehnt wurde, nicht stillschweigend neu aufsetzen, sondern benennen:
 
 > „Das entspricht `2026-06-02-eigener-pdf-renderer.md` — damals verworfen, weil […]. Gilt die Begruendung noch?"
 
@@ -19,7 +19,7 @@ Antwortet der User „ja, trotzdem", ist das eine neue Entscheidung und die alte
 ## Dateien anlegen
 
 ```
-docs/changes/2026-08-11-artikelimport/
+.docs/changes/2026-08-11-artikelimport/
 ├── proposal.md                          templates/proposal.md
 ├── specs/artikelimport/spec.md          templates/spec-delta.md
 ├── design.md                            templates/design.md   (nur wenn noetig)
@@ -52,7 +52,7 @@ Gut gefuellt sieht er so aus:
   erst, wenn der manuelle Weg im Betrieb steht.
 ```
 
-**`## Open Questions`** — Ausnahme, kein Sammelbecken. Hier steht nur, was **bewusst offen gelassen** ist, typischerweise weil die Antwort bei einem Dritten liegt (Kunde, Betreiber). Alles **Ungeklaerte**, an dem die Umsetzbarkeit haengt, gehoert nicht hierher, sondern in eine Wegfindung (`docs/wayfinding/`). Test: haengt ein Slice daran, ob die Frage so oder anders beantwortet wird, ist es kein offener Punkt, sondern eine Wegfindung.
+**`## Open Questions`** — Ausnahme, kein Sammelbecken. Hier steht nur, was **bewusst offen gelassen** ist, typischerweise weil die Antwort bei einem Dritten liegt (Kunde, Betreiber). Alles **Ungeklaerte**, an dem die Umsetzbarkeit haengt, gehoert nicht hierher, sondern in eine Wegfindung (`.docs/wayfinding/`). Test: haengt ein Slice daran, ob die Frage so oder anders beantwortet wird, ist es kein offener Punkt, sondern eine Wegfindung.
 
 ## Frontmatter
 
@@ -105,7 +105,7 @@ Vier Regeln, an denen der spaetere Merge haengt:
 3. **MODIFIED traegt den vollstaendigen neuen Text**, nicht ein Diff-Fragment. Beim Archivieren wird ersetzt, nicht gepatcht.
 4. **Betrifft der Change mehrere Faehigkeiten**, gibt es mehrere Dateien: `specs/artikelimport/spec.md`, `specs/freigabeprozess/spec.md`. Nicht alles in eine.
 
-Neue Faehigkeit → nur `## ADDED Requirements`, und beim Archivieren entsteht `docs/specs/{capability}/spec.md` aus `templates/spec.md`.
+Neue Faehigkeit → nur `## ADDED Requirements`, und beim Archivieren entsteht `.docs/specs/{capability}/spec.md` aus `templates/spec.md`.
 
 ## tasks.md — Slices
 

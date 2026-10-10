@@ -24,7 +24,7 @@ Gilt fuer `specs/` (Ist) und die Delta-Specs in `changes/` gleichermassen — es
 
 ## Sprachwahl: Modalverben und Szenario-Schluesselwoerter
 
-Beide sind **Inhalt**, keine Struktur — sie stehen im Satz, nicht um ihn herum (Entscheidung `2026-08-30-struktur-englisch-inhalt-je-ebene.md`). Sie folgen deshalb der Inhaltssprache der Ebene (`lang:` in deren `docs/README.md`, Default `en`) und **werden innerhalb eines Dokuments nicht gemischt**: entweder durchgehend `muss`/`wird`/`kann`/`WENN`/`DANN`/`UND`, oder durchgehend `must`/`will`/`can`/`WHEN`/`THEN`/`AND`.
+Beide sind **Inhalt**, keine Struktur — sie stehen im Satz, nicht um ihn herum (Entscheidung `2026-08-30-struktur-englisch-inhalt-je-ebene.md`). Sie folgen deshalb der Inhaltssprache der Ebene (`lang:` in deren `.docs/README.md`, Default `en`) und **werden innerhalb eines Dokuments nicht gemischt**: entweder durchgehend `muss`/`wird`/`kann`/`WENN`/`DANN`/`UND`, oder durchgehend `must`/`will`/`can`/`WHEN`/`THEN`/`AND`.
 
 Alle konkreten Beispiele in diesem Skill — hier, in `SKILL.md`, in `templates/` und in `beispiel/` — zeigen durchgehend den deutschen Fall (`lang: de`); bei `lang: en` gilt dieselbe Form auf Englisch, uebersetzt wird an den Beispielen selbst nichts.
 

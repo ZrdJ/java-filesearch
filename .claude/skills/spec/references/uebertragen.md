@@ -10,13 +10,13 @@ Dieser Skill ist zu ~85 % generisch. Was ortsspezifisch ist, steht hier — beim
 
 ## Was anzupassen ist
 
-### 1. Wo `docs/` liegt
+### 1. Wo `.docs/` liegt
 
 Traffino hat vier Ebenen (`intern/`, `intern/{repo}/`, `kundenprojekte/`, `kundenprojekte/{kunde}/`) mit einer eigenen Ablageregel, die in der jeweiligen `CLAUDE.md` steht. Andere Workspaces haben stattdessen `vault/` oder einen einzigen Ort — welche Regel gilt, fragt der Skill bei der `CLAUDE.md` der Ebene ab, er bringt keine eigene mit.
 
-**Betroffen**: nichts am Skill selbst. `SKILL.md` → „Ordner", `propose.md` → „Dateien anlegen" und `archive.md` → „Verschieben" nennen nur `docs/…`-Pfade relativ zur Ebene, ohne eine bestimmte Ablageregel vorauszusetzen.
+**Betroffen**: nichts am Skill selbst. `SKILL.md` → „Ordner", `propose.md` → „Dateien anlegen" und `archive.md` → „Verschieben" nennen nur `.docs/…`-Pfade relativ zur Ebene, ohne eine bestimmte Ablageregel vorauszusetzen.
 
-Ein Workspace **mit** Vault kann diesen Skill trotzdem nutzen — dann heisst der Wurzelordner `vault/` statt `docs/`, und `specs/`+`changes/` liegen darunter. Nichts anderes aendert sich.
+Ein Workspace **mit** Vault kann diesen Skill trotzdem nutzen — dann heisst der Wurzelordner `vault/` statt `.docs/`, und `specs/`+`changes/` liegen darunter. Nichts anderes aendert sich.
 
 ### 2. Meeting-Verkettung (bzw. was an ihre Stelle tritt)
 
@@ -28,7 +28,7 @@ Nicht ersatzlos streichen. Ein Vorhaben ohne nachvollziehbaren Ausloeser ist gen
 
 ### 3. Negativ-Speicher
 
-Der Abgleich gegen `status: rejected` (in `propose.md`, erster Schritt) setzt `project/decisions/` voraus. In einem Ziel mit dem `docs/`-Wissens-Layer ist das ein fester, englischer Ordnername — nichts anzupassen (Struktur ist workspace-uebergreifend gleich, siehe Punkt 4). Traegt das Ziel stattdessen ein `vault/` mit eigenen Ordnernamen (z. B. `entscheidungen/`, `adr/`), zeigt der Pfad auf dessen Aequivalent. Existiert dort gar keiner: anlegen — der Schritt ist einer der wenigen, die eine Frage beantworten, die sonst **niemand** beantworten kann.
+Der Abgleich gegen `status: rejected` (in `propose.md`, erster Schritt) setzt `project/decisions/` voraus. In einem Ziel mit dem `.docs/`-Wissens-Layer ist das ein fester, englischer Ordnername — nichts anzupassen (Struktur ist workspace-uebergreifend gleich, siehe Punkt 4). Traegt das Ziel stattdessen ein `vault/` mit eigenen Ordnernamen (z. B. `entscheidungen/`, `adr/`), zeigt der Pfad auf dessen Aequivalent. Existiert dort gar keiner: anlegen — der Schritt ist einer der wenigen, die eine Frage beantworten, die sonst **niemand** beantworten kann.
 
 **Betroffen**: `propose.md`, `archive.md` → „Wenn ein Change nicht kommt" — nur bei einem `vault/`-Ziel, sonst unveraendert.
 

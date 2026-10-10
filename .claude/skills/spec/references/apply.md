@@ -12,7 +12,7 @@ Nicht pflegen, sondern **ableiten**: die niedrigste Nummer in `tasks.md`, die `o
 2. **Umsetzen**, Test am vereinbarten Seam.
 3. **Gate laufen lassen** — den Build-/Test-Einstieg, den die Repo-`CLAUDE.md` (oder eine Ebene darueber) als kanonisch nennt. Nennt sie keinen, wird er ausgehandelt und dort nachgetragen — nicht geraten.
 4. **Status in `tasks.md`** nachziehen.
-5. **`docs/project/worklog/{YYYY-MM-DD}.md`** ergaenzen, wenn etwas passiert ist, das **nicht im Diff steht**: eine Sackgasse, eine Kundenaussage am Telefon, ein Grund fuer einen Umweg. Steht es im Diff, gehoert es nicht ins Log.
+5. **`.docs/project/worklog/{YYYY-MM-DD}.md`** ergaenzen, wenn etwas passiert ist, das **nicht im Diff steht**: eine Sackgasse, eine Kundenaussage am Telefon, ein Grund fuer einen Umweg. Steht es im Diff, gehoert es nicht ins Log.
 
 ## Richtungswechsel — anhaengen, nie ueberschreiben
 

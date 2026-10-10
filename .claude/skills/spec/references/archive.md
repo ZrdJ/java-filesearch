@@ -30,7 +30,7 @@ Der Status in `tasks.md` ist **Anzeige, nicht Wahrheit**. Wahrheit ist: ein Slic
 
 ## Der Merge — Marker fuer Marker
 
-Ziel ist `docs/specs/{capability}/spec.md`, Quelle `docs/changes/{slug}/specs/{capability}/spec.md`. Je Faehigkeit einmal.
+Ziel ist `.docs/specs/{capability}/spec.md`, Quelle `.docs/changes/{slug}/specs/{capability}/spec.md`. Je Faehigkeit einmal.
 
 **Existiert die Ist-Spec noch nicht** (neue Faehigkeit): aus `templates/spec.md` anlegen, dann weiter.
 
@@ -77,7 +77,7 @@ Beides jetzt aufloesen. Spaeter findet es niemand mehr.
 ## Verschieben
 
 ```
-docs/changes/{slug}/  →  docs/archive/{YYYY-MM}/{slug}/
+.docs/changes/{slug}/  →  .docs/archive/{YYYY-MM}/{slug}/
 ```
 
 `{YYYY-MM}` ist der Monat des **Archivierens**, nicht der des Anlegens. Im `proposal.md`: `status: fulfilled`, `updated:` auf heute.
@@ -86,15 +86,15 @@ Der Change wird **vollstaendig** verschoben, inklusive Delta-Spec. Sie ist ab je
 
 ## Nachziehen
 
-- [ ] `docs/project/worklog/{YYYY-MM-DD}.md` — ein Eintrag, was der Change gebracht hat
+- [ ] `.docs/project/worklog/{YYYY-MM-DD}.md` — ein Eintrag, was der Change gebracht hat
 - [ ] Offene Ausloeser-Referenzen abhaken, die auf diesen Change zeigten — je nachdem, was die Ebene zur Herkunfts-Verfolgung nutzt (z. B. ein Meeting-Skill, ein Tracker, ein Issue)
-- [ ] Entstand unterwegs eine Entscheidung, die jemand spaeter hinterfragt → `docs/project/decisions/`
+- [ ] Entstand unterwegs eine Entscheidung, die jemand spaeter hinterfragt → `.docs/project/decisions/`
 
 ## Wenn ein Change nicht kommt
 
 Nicht archivieren, sondern verwerfen:
 
 1. `status: rejected` im `proposal.md`, Begruendung als Abschnitt darunter — **dauerhaft** begruendet, nicht „gerade keine Zeit" (das ist eine Verschiebung, dann bleibt der Change `draft`).
-2. Eine Note unter `docs/project/decisions/` mit `status: rejected`. **Dort** wird beim naechsten Mal gesucht, nicht im Archiv.
-3. Verzeichnis nach `docs/archive/{YYYY-MM}/{slug}/` verschieben.
+2. Eine Note unter `.docs/project/decisions/` mit `status: rejected`. **Dort** wird beim naechsten Mal gesucht, nicht im Archiv.
+3. Verzeichnis nach `.docs/archive/{YYYY-MM}/{slug}/` verschieben.
 4. **Kein Merge.** Die Ist-Spec bleibt unveraendert — es wurde ja nichts gebaut.

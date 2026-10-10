@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # GENERIERT aus personal/tools-ref/traceability/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/tools-ref/traceability/.
 # source: personal-provider-ref
-# ref-hash: sha256:047cdfc4debdf6cb8da64cf94519f3fad82bdda043adb555922c7c776161d95a
+# ref-hash: sha256:1b39fa889a2177fed65cb7d2859335666122bf8eafb375ca65b12dc72076718e
 """
 traceability.py — prueft die Verkettung zwischen Anforderungen und Tests.
 
@@ -23,7 +23,7 @@ Die Regeln stehen im Skill `traceability`; hier steht ihre Umsetzung. Wo dieses
 Skript laeuft und mit welchen Argumenten, steht in der CLAUDE.md des Repos.
 
 Aufruf:
-    traceability.py --spec-root docs --source contracttest
+    traceability.py --spec-root .docs --source contracttest
     traceability.py --selftest
 
 Rueckgabe: 0 sauber · 1 Befunde in Richtung 1 · 2 Aufruf- oder Selbstpruefungsfehler
@@ -57,7 +57,7 @@ SOURCE_SUFFIXES = (".go", ".ts", ".tsx", ".js", ".mjs", ".java")
 SKIP = {"node_modules", ".git", "dist", "coverage", ".pnpm-store",
         "graphify-out", "vendor", "__pycache__", "target"}
 
-# Records (docs/records/): Personen und Meetings, verkettet ueber origin: und
+# Records (.docs/records/): Personen und Meetings, verkettet ueber origin: und
 # participants:. Die beiden Felder brauchen kein gemeinsames Muster - sie sind
 # im Bestand eindeutig getrennt. participants: enthaelt ausschliesslich
 # Personen; jeder Wert muss auf persons/{wert}.md aufloesen, ein Muster ist
@@ -518,14 +518,14 @@ ABORT = "__abort__"
 
 FIXTURES = {
     "sauber": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "a_test.go": "// [impl->req~zugang.ohne-anmeldung~1]\nfunc TestA(t *T){}\n",
     }, []),
 
     "sauber, java": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "src/test/java/ZugangTest.java":
@@ -540,14 +540,14 @@ FIXTURES = {
     }, []),
 
     "nicht aufloesbar": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "a_test.go": "// [impl->req~zugang.gibt-es-nicht~1]\n",
     }, ["nicht aufloesbar"]),
 
     "sauber, js": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "test/herdr-tui/compose.test.mjs":
@@ -556,28 +556,28 @@ FIXTURES = {
     }, []),
 
     "toter verweis in js-test": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "compose.test.js": "// [impl->req~zugang.gibt-es-nicht~1]\n",
     }, ["nicht aufloesbar"]),
 
     "veraltete Revision": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~2`\n",
         "a_test.go": "// [impl->req~zugang.ohne-anmeldung~1]\n",
     }, ["veraltete Revision"]),
 
     "vorgegriffene Revision": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "a_test.go": "// [impl->req~zugang.ohne-anmeldung~2]\n",
     }, ["vorgegriffene Revision"]),
 
     "grabstein nennt nachfolger": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Superseded: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n"
             "Superseded by: `req~zugang.rolle-entscheidet~1`\n"
@@ -587,7 +587,7 @@ FIXTURES = {
     }, ["abgeloest"]),
 
     "delta-spec loest auf": ({
-        "docs/changes/2026-01-01-x/specs/zugang/spec.md":
+        ".docs/changes/2026-01-01-x/specs/zugang/spec.md":
             "## ADDED Requirements\n\n### Requirement: Neu\n"
             "`req~zugang.ganz-neu~1`\n",
         "a_test.go": "// [impl->req~zugang.ganz-neu~1]\n",
@@ -598,76 +598,76 @@ FIXTURES = {
     # die zuletzt gelesene Datei (der fruehere Fehler), stuende die Anforderung
     # auf ~2 und der Verweis auf ~3 gaelte faelschlich als vorgegriffen.
     "delta ueberholt delta: hoehere revision gewinnt trotz dateireihenfolge": ({
-        "docs/changes/2026-09-21-bot-name-patterns/specs/pulls/spec.md":
+        ".docs/changes/2026-09-21-bot-name-patterns/specs/pulls/spec.md":
             "## MODIFIED Requirements\n\n### Requirement: Bot-Filter\n"
             "`req~pulls.bot-filter~3`\n",
-        "docs/changes/2026-09-21-gitea-bot-logins/specs/pulls/spec.md":
+        ".docs/changes/2026-09-21-gitea-bot-logins/specs/pulls/spec.md":
             "## MODIFIED Requirements\n\n### Requirement: Bot-Filter\n"
             "`req~pulls.bot-filter~2`\n",
         "a_test.go": "// [impl->req~pulls.bot-filter~3]\n",
     }, []),
 
     "doppelter kurzname": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Eins\n`req~zugang.doppelt~1`\n"
             "\n### Requirement: Zwei\n`req~zugang.doppelt~1`\n",
     }, ["doppelter Kurzname"]),
 
     "test ohne kennung schweigt": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "a_test.go": "func TestOhneKennung(t *T){}\n",
     }, []),
 
     "zusatzquelle wird gelesen": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "contracttest/suite.go": "// [impl->req~zugang.ohne-anmeldung~1]\n",
     }, []),
 
     "records: origin loest auf": ({
-        "docs/records/meetings/2026-08-11-kickoff.md":
+        ".docs/records/meetings/2026-08-11-kickoff.md":
             "---\nid: NWC-2026-08-11\n---\n"
             "\n### NWC-2026-08-11-2 — Freigabeprozess\n",
-        "docs/changes/2026-08-11-freigabe/proposal.md":
+        ".docs/changes/2026-08-11-freigabe/proposal.md":
             "---\nstatus: draft\norigin: [NWC-2026-08-11-2]\n---\n",
     }, []),
 
     "records: origin ohne ziel": ({
-        "docs/records/meetings/2026-08-11-kickoff.md":
+        ".docs/records/meetings/2026-08-11-kickoff.md":
             "---\nid: NWC-2026-08-11\n---\n",
-        "docs/changes/2026-08-11-x/proposal.md":
+        ".docs/changes/2026-08-11-x/proposal.md":
             "---\nstatus: draft\norigin: [NWC-2026-08-11-9]\n---\n",
     }, ["origin nicht aufloesbar"]),
 
     "records: origin ohne grossbuchstaben-praefix wird ignoriert": ({
-        "docs/records/meetings/.keep": "",
-        "docs/changes/2026-08-11-y/proposal.md":
+        ".docs/records/meetings/.keep": "",
+        ".docs/changes/2026-08-11-y/proposal.md":
             "---\nstatus: draft\n"
             "origin: [2026-08-11-etwas.md, rekonstruiert]\n---\n",
     }, []),
 
     "records: participants loest auf": ({
-        "docs/records/persons/max-mustermann.md":
+        ".docs/records/persons/max-mustermann.md":
             "---\nid: max-mustermann\n---\n",
-        "docs/records/meetings/2026-08-11-kickoff.md":
+        ".docs/records/meetings/2026-08-11-kickoff.md":
             "---\nid: NWC-2026-08-11\nparticipants: [max-mustermann]\n---\n",
     }, []),
 
     "records: participants ohne person": ({
-        "docs/records/meetings/2026-08-11-kickoff.md":
+        ".docs/records/meetings/2026-08-11-kickoff.md":
             "---\nid: NWC-2026-08-11\nparticipants: [erika-musterfrau]\n---\n",
     }, ["participant nicht aufloesbar"]),
 
     "records: meeting ohne folgen": ({
-        "docs/records/meetings/2026-08-11-kickoff.md":
+        ".docs/records/meetings/2026-08-11-kickoff.md":
             "---\nid: NWC-2026-08-11\n---\n",
     }, []),
 
     "records: kein verzeichnis": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "a_test.go": "// [impl->req~zugang.ohne-anmeldung~1]\n",
@@ -680,7 +680,7 @@ FIXTURES = {
     # aus (die Wortgrenzen-Heuristik trennt "Testcase" von "Latest").
 
     "testaehnliche datei ohne treffer bricht ab": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "src/test/java/testcases/AbstractZugangTestcase.java":
@@ -689,14 +689,14 @@ FIXTURES = {
     }, [ABORT]),
 
     "repo ganz ohne tests bleibt legitim": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "src/main/java/Zugang.java": "class Zugang {}\n",
     }, []),
 
     "latest ist kein testaehnlicher dateiname": ({
-        "docs/specs/zugang/spec.md":
+        ".docs/specs/zugang/spec.md":
             "### Requirement: Ohne Anmeldung kein Zugriff\n"
             "`req~zugang.ohne-anmeldung~1`\n",
         "src/main/java/LatestConfig.java": "class LatestConfig {}\n",
@@ -722,7 +722,7 @@ def selftest() -> int:
                 stderr = io.StringIO()
                 try:
                     with redirect_stderr(stderr):
-                        analyse(root / "docs", root, extra)
+                        analyse(root / ".docs", root, extra)
                     failures.append(f"  {name}: erwarteter Abbruch blieb aus")
                 except SystemExit as e:
                     if e.code != 2:
@@ -730,8 +730,8 @@ def selftest() -> int:
                             f"  {name}: Abbruch mit Exit {e.code}, erwartet 2")
                 continue
 
-            _, counts, findings, scanned = analyse(root / "docs", root, extra)
-            records = analyse_records(root / "docs", root / "docs" / "records")
+            _, counts, findings, scanned = analyse(root / ".docs", root, extra)
+            records = analyse_records(root / ".docs", root / ".docs" / "records")
             findings = findings + (records[2] if records is not None else [])
             kinds = sorted(f.kind for f in findings)
             if kinds != sorted(expected):
@@ -768,8 +768,8 @@ def selftest() -> int:
 def main():
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--spec-root", default="docs",
-                    help="Verzeichnis mit specs/ und changes/ (Vorgabe: docs)")
+    ap.add_argument("--spec-root", default=".docs",
+                    help="Verzeichnis mit specs/ und changes/ (Vorgabe: .docs)")
     ap.add_argument("--source-root", default=".",
                     help="Wurzel, unter der Tests gesucht werden (Vorgabe: .)")
     ap.add_argument("--source", action="append", default=[], metavar="PATH",
@@ -777,9 +777,9 @@ def main():
                          "ausserhalb von Testdateien; mehrfach erlaubt")
     ap.add_argument("--selftest", action="store_true",
                     help="nur die mitgelieferten Faelle pruefen, kein Repo lesen")
-    ap.add_argument("--records-root", default="docs/records",
+    ap.add_argument("--records-root", default=".docs/records",
                     help="Verzeichnis mit Personen- und Meeting-Datensaetzen "
-                         "(Vorgabe: docs/records); fehlt es, wird die "
+                         "(Vorgabe: .docs/records); fehlt es, wird die "
                          "Records-Pruefung stillschweigend uebersprungen")
     args = ap.parse_args()
 

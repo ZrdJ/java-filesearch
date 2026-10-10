@@ -28,6 +28,6 @@ verschiebt nichts. Nur Neues waechst hinten an.
 
 ## Was hier absichtlich fehlt
 
-`vorher/` und `nachher/` sind eine Lernhilfe. Im echten `docs/` gibt es
+`vorher/` und `nachher/` sind eine Lernhilfe. Im echten `.docs/` gibt es
 sie nicht: dort existiert genau **eine** `specs/artikelimport/spec.md`,
 und die Historie steht in `archive/`.

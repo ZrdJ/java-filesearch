@@ -1,15 +1,15 @@
 ---
 name: spec
-version: 3
+version: 4
 description: Spec-driven Arbeiten nach OpenSpec-Format, ohne dessen CLI. Legt Changes an (proposal, Delta-Spec, design, tasks), arbeitet sie ab, prueft Code gegen Spec und archiviert inklusive Delta-Merge in die Ist-Spec. Triggers auf Spec, Anforderung, Akzeptanzkriterium, Change, Vorhaben, Feature planen, propose, verify, archivieren, Scope-Creep, "was soll gebaut werden".
 # GENERIERT aus personal/skills-ref/spec/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/spec/.
 source: personal-provider-ref
-ref-hash: sha256:2077ef1d72d4c36ad3500b5e7f7a461914659572a77bd41ba73d7b0c53c85b31
+ref-hash: sha256:72421a7dfe62c71ffcacb839ab8b4050fa71eb6028440533c1e1ad0c4bcec7c8
 ---
 
 # spec
 
-Der Anforderungs-Layer des `docs/`-Verzeichnisses. Vier Phasen, jede mit eigener Detaildatei.
+Der Anforderungs-Layer des `.docs/`-Verzeichnisses. Vier Phasen, jede mit eigener Detaildatei.
 
 ## Das eine Prinzip
 
@@ -76,7 +76,7 @@ Vier harte Regeln:
 ## Ordner
 
 ```
-docs/
+.docs/
 ├── specs/{capability}/spec.md          Ist-Zustand
 ├── changes/{YYYY-MM-DD}-{slug}/
 │   ├── proposal.md                     Warum + Scope
@@ -93,7 +93,7 @@ docs/
 
 **Der Name ist englisch, auch wenn der Inhalt der Ebene deutsch ist.** Er ist ein Ordnername und damit Struktur — die Ablage soll ueber alle Projekte gleich aussehen, unabhaengig von der Inhaltssprache. Dasselbe gilt fuer die Slugs der Vorhaben unter `changes/`, `wayfinding/` und `archive/`. Weil der Name zugleich als erste Komponente jeder Kennung steht (`req~approval.…`), wird er einmal vergeben und danach nicht mehr angefasst.
 
-Wo `docs/` liegt, entscheidet die Ablageregel der jeweiligen Ebene — sie steht in der `CLAUDE.md`, die dort gilt, nicht in diesem Skill.
+Wo `.docs/` liegt, entscheidet die Ablageregel der jeweiligen Ebene — sie steht in der `CLAUDE.md`, die dort gilt, nicht in diesem Skill.
 
 ## Vorlagen
 

@@ -1,5 +1,5 @@
 {Delta-Spec eines Changes. Liegt unter changes/{slug}/specs/{capability}/spec.md.
-Nicht verwechseln mit der Ist-Spec unter docs/specs/{capability}/spec.md.
+Nicht verwechseln mit der Ist-Spec unter .docs/specs/{capability}/spec.md.
 
 Nur die Marker verwenden, die wirklich vorkommen — leere Marker weglassen.
 Bei MODIFIED und REMOVED muss der Titel WORTGLEICH dem in der Ist-Spec
