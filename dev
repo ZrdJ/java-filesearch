@@ -6,7 +6,7 @@
 # den Befehl direkt aus. Damit ist `./dev <cmd>` ueberall derselbe Aufruf und es
 # gibt keinen Weg, versehentlich nativ zu bauen.
 #
-# Hintergrund: ~/.claude/docs/project/research/devcontainer-architektur.md
+# Hintergrund: ~/.claude/.docs/project/research/devcontainer-architektur.md
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
@@ -58,7 +58,7 @@ check)
 	echo -e "${GREEN}Full check (tests)...${NC}"
 	mvn -B -ntp test
 	# Prueft, dass jeder [impl->req~...] in *Test.java auf eine Anforderung
-	# unter docs/specs/ aufloest (Kette kaputt -> Exit 1) und dass die Pruefung
+	# unter .docs/specs/ aufloest (Kette kaputt -> Exit 1) und dass die Pruefung
 	# selbst ueberhaupt gelaufen ist (Aufruf-/Selbstpruefungsfehler -> Exit 2,
 	# der gefaehrlichere Fall: ein Zweier hier hiesse "Pruefung lief nicht",
 	# nicht "Kette sauber"). `set -e` reicht beide Exit-Codes unveraendert nach
@@ -66,7 +66,7 @@ check)
 	# direkt in *Test.java-Dateien, es gibt kein Abstract*Testcase-Muster wie
 	# in java-predicates.
 	echo -e "${GREEN}Checking requirement <-> test chain...${NC}"
-	python3 bin/traceability/traceability.py --spec-root docs --source-root .
+	python3 bin/traceability/traceability.py --spec-root .docs --source-root .
 	;;
 *) usage ;;
 esac
