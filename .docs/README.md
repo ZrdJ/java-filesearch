@@ -12,7 +12,7 @@ combining `File.listFiles()` and `Files.walkFileTree()` behind a single `Search`
 entry point for recursive and non-recursive searches by `File` or `Path`.
 
 Repo-specific knowledge. What concerns more than this repo lives in the knowledge layer
-of the WS root (`~/workspaces/personal/docs/`).
+of the WS root (`~/workspaces/personal/.docs/`).
 
 ## Folders
 
