@@ -1,10 +1,10 @@
 ---
 name: docs
-version: 8
+version: 9
 description: Wegweiser fuer den .docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket, Artefakt). Triggers auf .docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, veroeffentlichte Seite ablegen, "wo gehoert das hin".
 # GENERIERT aus personal/skills-ref/docs/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/docs/.
 source: personal-provider-ref
-ref-hash: sha256:70d966c4922083c346eed6d2e66bea75342559f1107978279da8fb6bb02fd011
+ref-hash: sha256:1f8f962470cb0e5e37c58b868ba07f5171303bfb8344e20ccc363e1acd0a7b46
 ---
 
 # docs
@@ -55,6 +55,8 @@ Auf jeder Ebene derselbe Satz, aber nicht mehr vier gleichrangige Ordner, sonder
 ├── artifacts/          FUNDUS — was veroeffentlicht wurde (Abschnitt 4b)
 │   └── {YYYY-MM-DD}-{slug}/   note.md + page.html
 │
+├── design/{app}/       QUELLEN eines UI-Entwurfs, nur wo eine App entworfen wird (Abschnitt 4c)
+│
 ├── wayfinding/{YYYY-MM-DD}-{slug}/   PIPELINE 1 — Weg ist unklar: map.md + tickets/
 ├── changes/{YYYY-MM-DD}-{slug}/      PIPELINE 2 — laufendes Vorhaben
 ├── archive/{YYYY-MM}/                PIPELINE 3 — abgeschlossene Changes
@@ -66,6 +68,8 @@ Auf jeder Ebene derselbe Satz, aber nicht mehr vier gleichrangige Ordner, sonder
 **`project/`, `records/` und `artifacts/` sind keine Stationen, sondern Fundus.** ADRs, Recherchen, Quellen, Arbeitslog-Eintraege und veroeffentlichte Seiten entstehen in jeder Phase — vor einer Wegfindung genauso wie waehrend eines Changes — und werden von ueberall verlinkt, nicht davor oder dahinter einsortiert.
 
 **Wegfindung traegt eine Karte je Vorhaben, und die Karte ist Index, kein Speicher.** Eine beantwortete Frage verlaesst sie und wird ein ADR bzw. ein Recherche-Bericht im Fundus; die Karte behaelt nur eine Zeile mit Verweis. Vorlagen dazu in Abschnitt 6.
+
+**`design/{app}/` ist eine dritte Sorte: weder Fundus noch Station, sondern Quellen.** Aus ihnen baut ein Werkzeug eine Seite, so wie aus Code ein Programm gebaut wird; die Dateien folgen dem Format des Skills `design`, nicht dem Frontmatter dieses Layers. Der Ordner entsteht nicht mit der Ebene, sondern erst, wenn ein Repo eine Oberflaeche entwirft.
 
 Der Satz wird beim Anlegen einer Ebene **vollstaendig** erzeugt; die `.gitkeep` eines Ordners verschwindet mit seiner ersten echten Note. Ein **weiterer** Ordner wird nicht erfunden, sondern eingeordnet: Station der Einbahnstrasse, oder Fundus? Passt es in keins von beidem, ist es fast immer eine Entscheidung oder ein Arbeitslog-Eintrag — oder ein Datensatz und gehoert nach Frage 1.
 
@@ -221,6 +225,22 @@ Wechselt die Sichtbarkeit, wechselt die URL ihren Prefix; `visibility:` und `url
 
 Haengt in einer Session gar kein Artefakt-Werkzeug, entsteht auch kein Eintrag: dann wird nicht
 veroeffentlicht, sondern im Terminal berichtet oder als Datei abgelegt.
+
+## 4c. Design — Quellen eines UI-Entwurfs
+
+Entwirft ein Repo eine Oberflaeche, liegen die Quellen des Entwurfs unter `.docs/design/{app}/`. **Wie damit gearbeitet wird, wie die Dateien aussehen und welche Befehle sie bauen und pruefen, steht im Skill `design`** — hier steht nur, was dort liegt, damit niemand es fuer eine Note haelt oder an einen anderen Ort legt.
+
+| Was | Wo | In einer Zeile |
+|---|---|---|
+| Bildschirm | `design/{app}/screens/*.json` | ein Zustand der App, den der User sehen kann; steht einmal und traegt eine Kennung, die nie neu vergeben wird (`anst.liste.eintrag-offen`) |
+| Flow | `design/{app}/flows/*.json` | Usecase, Aktionen und Verbindungen von Bildschirm zu Bildschirm, mit Kennungen im selben Namensraum |
+| Design-Karte | `design/{app}/cards/{id}/card.md` | was der User abnimmt, eine Layout-Entscheidung oder eine Aktion; nennt Bildschirme bei ihrer Kennung und besitzt keine Bilder |
+
+Daneben liegen dort das Manifest `design.json`, die Werte `tokens.json`, die Bausteine `components/`, die Anordnung `board/layout.json` und, wo das Manifest sie unter `questions` nennt, die eigenen Formatfragen der App in `questions.md`. Das Werkzeug dazu liegt vendoriert unter `bin/design/`, nicht im Layer.
+
+**Eine Design-Karte ist keine Karte der Wegfindung.** `map.md` fuehrt die offenen Fragen eines Vorhabens und traegt `type: map`; `card.md` traegt ein eigenes Frontmatter mit elf festen Schluesseln und keinen `type:` aus Abschnitt 5. Ihre Abschnitte sind deutsch und fest — eine Ausnahme von Abschnitt 3, die der Skill `design` als bekannte Luecke fuehrt.
+
+**Die gebaute Seite liegt nicht hier**, sondern, sobald sie veroeffentlicht ist, unter `artifacts/{YYYY-MM-DD}-{slug}/` (Abschnitt 4b). Die Bilder eines Browser-Laufs unter `design/shots/` sind Werkzeug-Ausgabe und von git ignoriert.
 
 ## 5. Gemeinsames Frontmatter
 
