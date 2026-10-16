@@ -171,9 +171,9 @@ public class MdcPlugin {
         ResponseStatus("mdc.response.status"),
         ResponseDuration("mdc.response.time");
 
-        private final String key;
-        MdcIdentifier(String key) { this.key = key; }
-        public String key() { return key; }
+        private final String _key;
+        MdcIdentifier(final String key) { _key = key; }
+        public String key() { return _key; }
     }
 
     public void start(Session session, String path, String method) {

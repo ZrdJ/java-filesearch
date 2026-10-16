@@ -50,12 +50,12 @@ public class Geolite2 {
         City("GeoLite2-City.mmdb"),
         Country("GeoLite2-Country.mmdb");
 
-        private final String name;
-        Databases(final String name) { this.name = name; }
+        private final String _name;
+        Databases(final String name) { _name = name; }
 
         public Path path() {
             return Paths.get(Environment.isLocal()
-                ? ".local/maxmind" : "/maxmind").resolve(name);
+                ? ".local/maxmind" : "/maxmind").resolve(_name);
         }
     }
 
