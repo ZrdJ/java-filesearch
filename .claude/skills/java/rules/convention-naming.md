@@ -49,17 +49,25 @@ public Optional<Product> findProductById(final UUID id) {
 ### Variablen
 
 - **camelCase** für lokale Variablen
-- **_underscorePrefix** für private Felder
+- **_underscorePrefix** nur für `private`/`protected` Felder, die ausschliesslich aus der eigenen Klassenhierarchie gelesen werden — als `_feld`, nie als `objekt._feld`
+- Ein Feld, das direkt über ein Objekt gelesen wird (`objekt.feld`), ist `public` und trägt keinen Underscore
+- Auch der Zugriff über eine andere Instanz derselben Klasse (z.B. `other.id` in `equals`) zählt als Zugriff über ein Objekt
 - `final` bevorzugen
 
 ```java
-public class Example {
-    private final ProductRepository _productRepository;
+public class Order {
+    public final OrderId id;             // wird von aussen gelesen: order.id
+    protected final Money _total;        // nur Order und Unterklassen: _total
+    private final List<Line> _lines;     // nur Order selbst: _lines
 
-    public void process() {
-        final var products = _productRepository.findAll();
+    public boolean equals(final Object o) {
+        return o instanceof final Order other && id.equals(other.id);   // other._id waere falsch
     }
 }
+
+// anderswo
+final var orderId = order.id;            // richtig
+final var total = order._total;          // falsch: Underscore-Feld ueber ein Objekt
 ```
 
 ### Konstanten
@@ -116,20 +124,20 @@ public enum CrmOrganisationType {
     Supplier(OrganisationType.supplier, "crm.organisation.type.supplier"),
     ServiceProvider(OrganisationType.service_provider, "crm.organisation.type.service_provider");
 
-    private final OrganisationType jooqType;
-    private final String translationKey;
+    private final OrganisationType _jooqType;
+    private final String _translationKey;
 
-    CrmOrganisationType(OrganisationType jooqType, String translationKey) {
-        this.jooqType = jooqType;
-        this.translationKey = translationKey;
+    CrmOrganisationType(final OrganisationType jooqType, final String translationKey) {
+        _jooqType = jooqType;
+        _translationKey = translationKey;
     }
 
-    public OrganisationType jooq() { return jooqType; }
-    public String translationKey() { return translationKey; }
+    public OrganisationType jooq() { return _jooqType; }
+    public String translationKey() { return _translationKey; }
 
-    public static CrmOrganisationType fromDatabase(OrganisationType db) {
-        for (var value : values()) {
-            if (value.jooqType == db) return value;
+    public static CrmOrganisationType fromDatabase(final OrganisationType db) {
+        for (final var value : values()) {
+            if (value.jooq() == db) return value;
         }
         throw new IllegalArgumentException("Unknown: " + db);
     }
@@ -157,7 +165,7 @@ net.example.project.product.usecase
 - [ ] Klassen/Records: PascalCase mit Suffix (*Dto, *Repository, etc.)
 - [ ] Interfaces: PascalCase ohne I-Prefix
 - [ ] Methoden: camelCase mit Verb-Prefix
-- [ ] Private Felder: _underscorePrefix
+- [ ] Underscore nur bei private/protected Feldern, die ausschliesslich aus der eigenen Klassenhierarchie gelesen werden; Zugriff ueber ein Objekt nur auf public-Felder ohne Underscore
 - [ ] Konstanten: UPPER_SNAKE_CASE
 - [ ] Enums: PascalCase (Klasse und Werte)
 - [ ] Packages: lowercase

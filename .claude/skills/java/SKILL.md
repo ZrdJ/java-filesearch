@@ -3,7 +3,7 @@ name: java
 description: Umfassende Java-Entwicklungsrichtlinien für Backend-Projekte. Enthält Konventionen, Integrationen (PostgreSQL, Javalin, Jackson, Log4j2), Patterns (Clean Architecture, Repository) und Build-Konfiguration (Maven). Triggers auf Java-Code, REST APIs, Datenbank, jOOQ, Flyway, DTOs, Records, Logging, Properties, Identifiers, Security.
 # GENERIERT aus personal/skills-ref/java/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/java/.
 source: personal-provider-ref
-ref-hash: sha256:c9b1fe65dbfd6413221ddb5a5bea9c6c7dea36cd7b40623b0c2c4fc1efad50d0
+ref-hash: sha256:2d884146fda34eff4a06b1fa7ef20c10ca6b9b95759d900197179f6e6e27dc6f
 ---
 
 # Java Development Guide
