@@ -4,7 +4,7 @@ Das Delta in die Ist-Spec einarbeiten und den Change wegraeumen. Ohne CLI ist da
 
 ## Gate — erst wenn alles davon stimmt
 
-- [ ] Alle Slices in `tasks.md` sind `done` oder `dropped` (mit Begruendung)
+- [ ] Alle Slices in `tasks.md` sind `done` oder `dropped` (mit Begruendung) — mit Backlog-Ticket: alle Punkte der Checkliste abgehakt, `impl_prs` gemergt
 - [ ] Phase 3 (`verify`) ist gelaufen, **keine** offene Zeile
 - [ ] Jede Anforderung des Changes hat ein gruenes Szenario **oder** eine Notiz, warum nicht
 - [ ] Test-/Build-Gate des Repos ist gruen

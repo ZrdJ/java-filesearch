@@ -23,8 +23,10 @@ Antwortet der User „ja, trotzdem", ist das eine neue Entscheidung und die alte
 ├── proposal.md                          templates/proposal.md
 ├── specs/artikelimport/spec.md          templates/spec-delta.md
 ├── design.md                            templates/design.md   (nur wenn noetig)
-└── tasks.md                             templates/tasks.md
+└── tasks.md                             templates/tasks.md   (nur ohne Backlog-Ticket)
 ```
+
+Haengt die Umsetzung an einem Ticket im Backlog von gloude, entfaellt `tasks.md`; `proposal.md` verweist im Abschnitt `## Tickets` auf das Ticket (siehe `SKILL.md` → "Change mit Backlog-Ticket").
 
 Slug: kurz, fachlich, kebab-case. Datum ist das des Anlegens und aendert sich nie — auch nicht, wenn der Change Monate laeuft.
 
@@ -67,7 +69,7 @@ origin: [{Referenz-ID}]
 ---
 ```
 
-- **`status`** beschreibt den **Vertrag**, nicht den Fortschritt. `draft` = in Verhandlung, `active` = gilt und wird umgesetzt, `fulfilled` = archiviert, `rejected` = kommt nicht. Wie weit die Umsetzung ist, steht in `tasks.md`.
+- **`status`** beschreibt den **Vertrag**, nicht den Fortschritt. `draft` = in Verhandlung, `active` = gilt und wird umgesetzt, `fulfilled` = archiviert, `rejected` = kommt nicht. Wie weit die Umsetzung ist, steht in `tasks.md` bzw. im Ticket, wenn eines die Umsetzung traegt.
 - **`origin`** nennt die nachvollziehbare Quelle, die das Vorhaben ausgeloest hat — im Referenz-Schema, das die Ebene dafuer fuehrt (z. B. eine Meeting-Themenblock-ID, ein Ticket, ein Protokoll-Verweis). Leer lassen, wenn es keine gibt — nicht erfinden. Bei rekonstruierten Vorhaben: `[rekonstruiert]`.
 - **`projects`** ist der Projektbezug, wenn ein Repo mehrere Projekte fuehrt (Monorepo-Fall). Er entsteht hier, nicht ueber den Pfad.
 
@@ -109,6 +111,8 @@ Neue Faehigkeit → nur `## ADDED Requirements`, und beim Archivieren entsteht `
 
 ## tasks.md — Slices
 
+Nur ohne Backlog-Ticket. Traegt ein Ticket die Umsetzung, stehen die Teilaufgaben als Checkliste im Ticket, vertikal geschnitten nach denselben Regeln wie unten.
+
 ```markdown
 | # | Slice | Project | Blocked by | Status |
 |---|---|---|---|---|
@@ -130,7 +134,8 @@ Neue Faehigkeit → nur `## ADDED Requirements`, und beim Archivieren entsteht `
 - [ ] jede Anforderung traegt eine Kennung, und die Kurznamen sind je Faehigkeit eindeutig
 - [ ] MODIFIED/REMOVED-Kennungen finden sich in der Ist-Spec wieder
 - [ ] `origin:` gefuellt oder bewusst leer
-- [ ] Slices sind vertikal und einzeln lauffaehig
+- [ ] Slices (bzw. die Checkliste des Tickets) sind vertikal und einzeln lauffaehig
+- [ ] mit Backlog-Ticket: `## Tickets` im Proposal gefuellt, kein `tasks.md`
 - [ ] offene Fragen sind bewusst offen gelassen, nicht ungeklaert — Ungeklaertes mit Slice-Abhaengigkeit steht in einer Wegfindung, nicht hier
 
 Danach `status: active` und Phase 2.

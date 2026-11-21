@@ -1,6 +1,6 @@
 # Phase 2 — apply
 
-Slices abarbeiten. Der Change ist auf `status: active`, `tasks.md` ist gefuellt.
+Slices abarbeiten. Der Change ist auf `status: active`, `tasks.md` ist gefuellt — oder, mit Backlog-Ticket, die Checkliste des Tickets. Dann tritt die Checkliste ueberall unten an die Stelle von `tasks.md`: der naechste Schritt ist ihr erster offener Punkt, sofern `blocked_by` des Tickets erledigt ist, und abgehakt wird mit `backlog_update` (`check`), nicht in einer Datei.
 
 ## Was als naechstes dran ist
 

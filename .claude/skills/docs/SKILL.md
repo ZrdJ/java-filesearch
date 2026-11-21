@@ -1,10 +1,10 @@
 ---
 name: docs
-version: 9
+version: 10
 description: Wegweiser fuer den .docs/-Wissens-Layer. Entscheidet, auf welcher Ebene eine Note liegt (Workspace / Sub-Bereich / Repo) und was stattdessen in die Datenhaltung des Providers gehoert, liefert Frontmatter-Schema und Template je Note-Typ (Entscheidung, Arbeitslog, Spec, Change, Karte, Ticket, Artefakt). Triggers auf .docs/, Entscheidung festhalten, ADR, Arbeitslog, Wegfindung, Karte, offene Frage, veroeffentlichte Seite ablegen, "wo gehoert das hin".
 # GENERIERT aus personal/skills-ref/docs/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/docs/.
 source: personal-provider-ref
-ref-hash: sha256:1f8f962470cb0e5e37c58b868ba07f5171303bfb8344e20ccc363e1acd0a7b46
+ref-hash: sha256:2f220a59f41229827421101195d789fb76b770ff605930d8a49cc914cc85f4bc
 ---
 
 # docs
@@ -29,10 +29,11 @@ Frage 1 ist die wichtigste, weil sie am haeufigsten falsch beantwortet wird. Die
 
 Ein Gespraech, in dem eine Architekturfrage entschieden wird, erzeugt also **zwei** Dinge: einen Datensatz in der Datenhaltung des Providers und einen ADR in `.docs/project/decisions/`. Nicht eins von beiden, und nicht dasselbe zweimal.
 
-Zwei Faustregeln dazu:
+Drei Faustregeln dazu:
 
 - **Ein Repo, ein `.docs/`.** Buendelt ein Repo mehrere Projekte in Unterordnern, gibt es trotzdem genau **ein** `.docs/` — auf Repo-Ebene, nicht je Projekt-Unterordner. Projektbezug wird ueber `projects:` im Frontmatter hergestellt, nicht ueber den Pfad.
 - **Keine Dubletten ueber Ebenen.** Wandert etwas hoch, wird es unten geloescht oder verlinkt.
+- **Der Scope entscheidet, nicht der Entstehungsort.** Das gilt besonders fuer Karten und Changes: ein Vorhaben, das genau ein Repo betrifft, liegt in dessen `.docs/`, auch wenn es in einer Session am WS-Root begonnen hat; eines, das mehrere Repos oder den Workspace betrifft, liegt am WS-Root; eines, das ueber Workspaces hinweggeht oder die Arbeitsweise selbst betrifft, liegt in `~/.claude/.docs/`. Eine Vault-Ebene (`baunach`, `baltasaar`) kennt dafuer `plans/`; der Layer kennt kein `plans/`, dort beginnt ein Vorhaben als `wayfinding/`, wird `changes/` und endet in `archive/` (Abschnitt 2).
 
 ## 2. Ordnersatz — ein Fundus, eine Pipeline
 
@@ -436,6 +437,7 @@ Ein `diagram-design`-Bild, das veroeffentlicht wird, landet danach in `artifacts
 
 Dokumentiert wird **waehrend** der Arbeit, nicht am Ende:
 
-1. Neue Erkenntnis → sofort in die passende Note. Nicht in der Commit-Message verstecken.
-2. Code-Aenderung, die eine Note falsch macht (Rename, entfernter Pfad, geaendertes Verhalten) → Note im **selben** Arbeitsschritt nachziehen. Eine stale Note ist schaedlicher als eine fehlende.
-3. Verweise als relativer Pfad in Backticks, nicht als Wiki-Link — dieser Layer ist kein Obsidian-Vault. Verweise in die Datenhaltung des Providers laufen ueber IDs, nicht ueber Pfade.
+1. Neue Erkenntnis → sofort in die passende Note: eine Architektur-Entscheidung, ein Trade-off, ein Workaround, ein Pattern. Nicht in der Commit-Message verstecken, nicht im Chat verloren gehen lassen.
+2. Code-Aenderung, die eine Note falsch macht (Rename, Refactor, entfernter Pfad, geaendertes Verhalten) → Note im **selben** Arbeitsschritt nachziehen. Eine stale Note ist schaedlicher als eine fehlende.
+3. Verweise als relativer Pfad in Backticks, nicht als Wiki-Link — dieser Layer ist kein Obsidian-Vault, und relative Pfade rendern zusaetzlich auf GitHub (`../../specs/host-guard/spec.md`). Externe Ziele (Code-Dateien, URLs) bleiben Backtick bzw. Markdown-Link. Verweise in die Datenhaltung des Providers laufen ueber IDs, nicht ueber Pfade.
+4. Eine aeltere Note, die noch `[[…]]`-Wikilinks aus einem Vault-Umzug traegt, wird beim **naechsten Anfassen** auf relative Pfade umgestellt — nicht in einem eigenen Durchgang, und nicht liegen gelassen, wenn sie ohnehin gerade editiert wird.

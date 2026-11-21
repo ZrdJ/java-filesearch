@@ -1,10 +1,10 @@
 ---
 name: spec
-version: 4
+version: 5
 description: Spec-driven Arbeiten nach OpenSpec-Format, ohne dessen CLI. Legt Changes an (proposal, Delta-Spec, design, tasks), arbeitet sie ab, prueft Code gegen Spec und archiviert inklusive Delta-Merge in die Ist-Spec. Triggers auf Spec, Anforderung, Akzeptanzkriterium, Change, Vorhaben, Feature planen, propose, verify, archivieren, Scope-Creep, "was soll gebaut werden".
 # GENERIERT aus personal/skills-ref/spec/ — nicht hier editieren; Aenderungen gehoeren nach ~/.claude/skills-ref/spec/.
 source: personal-provider-ref
-ref-hash: sha256:72421a7dfe62c71ffcacb839ab8b4050fa71eb6028440533c1e1ad0c4bcec7c8
+ref-hash: sha256:0e8fccc6eaa83e3082bc82d10e9de222f733475cb4dd87d5e07ca50e126f189e
 ---
 
 # spec
@@ -82,7 +82,7 @@ Vier harte Regeln:
 │   ├── proposal.md                     Warum + Scope
 │   ├── specs/{capability}/spec.md      Delta: ADDED / MODIFIED / REMOVED
 │   ├── design.md                       nur bei nicht-offensichtlicher Technik
-│   └── tasks.md                        Slices
+│   └── tasks.md                        Slices — entfaellt, wenn ein Backlog-Ticket die Umsetzung traegt
 ├── archive/{YYYY-MM}/{slug}/
 └── records/                            Datensaetze, nur mit records: true
     ├── persons/{id}.md
@@ -95,6 +95,23 @@ Vier harte Regeln:
 
 Wo `.docs/` liegt, entscheidet die Ablageregel der jeweiligen Ebene — sie steht in der `CLAUDE.md`, die dort gilt, nicht in diesem Skill.
 
+## Change mit Backlog-Ticket
+
+Haengt die Umsetzung eines Changes an einem Ticket im Backlog von gloude (Skill `planning`), fuehrt der Change **kein `tasks.md`**. Die Teilaufgaben stehen als Checkliste im Ticket, der Fortschritt in dessen `status` und `impl_prs`; ein `tasks.md` daneben waere eine zweite Wahrheit ueber denselben Fortschritt (`~/.claude/.docs/project/decisions/2026-11-20-ticket-traegt-das-was-docs-das-warum.md`).
+
+Stattdessen verweist das `proposal.md` auf das Ticket, in einem Abschnitt `## Tickets` am Ende:
+
+```markdown
+## Tickets
+
+- T-8 (personal) — Backlog im Core und in der Web-App
+- T-9 (personal) — Backlog-Liste in der App, blocked_by T-8
+```
+
+Die Nummer steht mit Profil, weil Tickets je Profil gezaehlt werden. Wo diese Referenz das `tasks.md` ersetzt, gilt in den Phasen: Phase 2 leitet den naechsten Schritt aus der Checkliste des Tickets ab und hakt dort ab; Phase 4 gleicht die Checkliste und `impl_prs` statt der Slice-Tabelle gegen `git log` ab. Proposal, Delta-Spec und `design.md` bleiben unveraendert Teil des Changes.
+
+Ohne Ticket — eine Session, die nicht von gloude gestartet wurde, oder ein Repo ohne Backlog — bleibt `tasks.md` wie unten beschrieben.
+
 ## Vorlagen
 
 Kopierfertig unter [`templates/`](templates/) — **kopieren, nicht nachbauen**:
@@ -104,7 +121,7 @@ Kopierfertig unter [`templates/`](templates/) — **kopieren, nicht nachbauen**:
 | `templates/proposal.md` | Phase 1, Kopf eines Changes |
 | `templates/spec-delta.md` | Phase 1, die Delta-Spec |
 | `templates/design.md` | Phase 1/2, Technik + Test-Seams |
-| `templates/tasks.md` | Phase 1, Slice-Tabelle |
+| `templates/tasks.md` | Phase 1, Slice-Tabelle — nur ohne Backlog-Ticket |
 | `templates/spec.md` | Ist-Spec, beim Anlegen einer neuen Faehigkeit |
 
 ## Vollstaendiges Beispiel
